@@ -1,0 +1,31 @@
+---
+// 우측에 둥둥 떠다니는 연도 점프 네비.
+// lg 이상에서만 노출 (모바일/태블릿은 자연 스크롤).
+
+interface Props {
+  years: number[];
+  label?: string;
+}
+
+const { years, label = '연도별 바로가기' } = Astro.props;
+---
+
+<nav
+  class="hidden lg:block fixed right-4 xl:right-8 top-1/2 -translate-y-1/2 z-20"
+  aria-label={label}
+>
+  <ul class="flex flex-col gap-2">
+    {
+      years.map((y) => (
+        <li>
+          <a
+            href={`#year-${y}`}
+            class="block px-3 py-1 rounded-full text-sm border border-default text-muted hover:text-primary hover:border-primary bg-page/90 backdrop-blur transition-colors text-center"
+          >
+            {y}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

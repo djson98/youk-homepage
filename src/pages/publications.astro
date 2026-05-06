@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import YearJumpNav from '../components/YearJumpNav.astro';
 import { getCollection } from 'astro:content';
 
 const pubs = await getCollection('publications');
@@ -25,23 +26,7 @@ const years = Object.keys(grouped)
       <p class="text-muted">준비 중입니다.</p>
     ) : (
       <>
-        <nav
-          class="sticky top-16 md:top-20 z-10 -mx-3 md:-mx-8 px-3 md:px-8 py-3 bg-page/90 backdrop-blur border-b border-default mb-10"
-          aria-label="연도별 논문 바로가기"
-        >
-          <ul class="flex flex-wrap gap-2">
-            {years.map((y) => (
-              <li>
-                <a
-                  href={`#year-${y}`}
-                  class="px-3 py-1 rounded-full text-sm border border-default text-muted hover:text-primary hover:border-primary transition-colors"
-                >
-                  {y}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <YearJumpNav years={years} label="연도별 논문 바로가기" />
 
         <div class="space-y-16">
           {years.map((year) => (
