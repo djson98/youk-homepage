@@ -121,7 +121,6 @@ export const siteConfig: SiteConfig = {
       { href: "/research", labelKo: "연구", labelEn: "Research" },
       { href: "/members", labelKo: "구성원", labelEn: "Members" },
       { href: "/publications", labelKo: "논문", labelEn: "Publications" },
-      { href: "/lectures", labelKo: "강의", labelEn: "Lectures" },
       { href: "/gallery", labelKo: "갤러리", labelEn: "Gallery" },
       { href: "/contact", labelKo: "연락처", labelEn: "Contacts" },
     ],
