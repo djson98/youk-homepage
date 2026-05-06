@@ -1,0 +1,17 @@
+---
+// 풀블리드 히어로 자리. 디자인 미정 — 껍데기만.
+// BaseLayout의 max-w-7xl을 우회하기 위해 main 외부 slot에 배치.
+---
+
+<section
+  class="w-full bg-surface-muted border-b border-default min-h-[60vh] pt-20 md:pt-24 flex items-center"
+  aria-label="Hero"
+>
+  <div class="w-full max-w-7xl mx-auto px-3 md:px-8">
+    <slot>
+      <p class="text-muted text-center">
+        연구실 소개 / 사진 등을 넣어주세요
+      </p>
+    </slot>
+  </div>
+</section>
