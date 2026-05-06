@@ -41,7 +41,6 @@ export interface SiteConfig {
   sections: {
     home: boolean;
     about: boolean;
-    research: boolean;
     members: boolean;
     projects: boolean;
     publications: boolean;
@@ -97,7 +96,6 @@ export const siteConfig: SiteConfig = {
   sections: {
     home: true,
     about: true,
-    research: true,
     members: true,
     projects: true,
     publications: true,
@@ -116,7 +114,6 @@ export const siteConfig: SiteConfig = {
   },
   nav: {
     items: [
-      { href: "/research", labelKo: "연구", labelEn: "Research" },
       { href: "/members", labelKo: "구성원", labelEn: "Members" },
       { href: "/publications", labelKo: "논문", labelEn: "Publications" },
       { href: "/lectures", labelKo: "강의", labelEn: "Lectures" },

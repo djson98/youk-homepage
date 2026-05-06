@@ -22,4 +22,3 @@ pnpm-debug.log*
 # editor
 .vscode/
 .idea/
-.gstack/
