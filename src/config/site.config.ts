@@ -82,7 +82,7 @@ export const siteConfig: SiteConfig = {
   },
   lab: {
     // TODO: 양식 도착 후 실제 랩 이름으로 교체 (KNUH 페이지에 별도 랩명 표기 없음 — 임시 작업명)
-    nameKo: "육희정 진단검사의학 연구실",
+    nameKo: "진단검사의학 연구실",
     nameEn: "Youk Laboratory Medicine Lab",
     tagline: "정밀 진단검사로 임상 의사결정을 돕는 연구실",
     keywords: ["진단혈액", "수혈의학", "분자유전", "진단면역", "암진단"],
