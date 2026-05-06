@@ -6,7 +6,7 @@
  * To use this template for a different professor:
  *   1. Edit the `siteConfig` object below.
  *   2. Replace markdown files under `/src/content/` (career, members,
- *      projects, news, lectures, publications) with the new professor's
+ *      projects, gallery, lectures, publications) with the new professor's
  *      content.
  *
  * NOTE: Fields marked `// TODO: 양식 도착 후 채우기` are pending the
@@ -45,7 +45,7 @@ export interface SiteConfig {
     projects: boolean;
     publications: boolean;
     lectures: boolean;
-    news: boolean;
+    gallery: boolean;
     contact: boolean;
   };
   contact: {
@@ -100,7 +100,7 @@ export const siteConfig: SiteConfig = {
     projects: true,
     publications: true,
     lectures: true,
-    news: true,
+    gallery: true,
     contact: true,
   },
   contact: {
@@ -117,7 +117,7 @@ export const siteConfig: SiteConfig = {
       { href: "/members", labelKo: "구성원", labelEn: "Members" },
       { href: "/publications", labelKo: "논문", labelEn: "Publications" },
       { href: "/lectures", labelKo: "강의", labelEn: "Lectures" },
-      { href: "/news", labelKo: "소식", labelEn: "News" },
+      { href: "/gallery", labelKo: "갤러리", labelEn: "Gallery" },
       { href: "/contact", labelKo: "연락처", labelEn: "Contact" },
     ],
   },

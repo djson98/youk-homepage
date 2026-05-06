@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const albums = await getCollection('gallery');
+const sorted = [...albums].sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+const dateFmt = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const normalize = (img: string | { src: string; caption?: string }) =>
+  typeof img === 'string' ? { src: img, caption: undefined } : img;
+---
+
+<BaseLayout title="갤러리">
+  <h1 class="page-title mb-8">갤러리</h1>
+
+  {
+    sorted.length === 0 ? (
+      <p class="text-muted">준비 중입니다.</p>
+    ) : (
+      <div class="space-y-12">
+        {sorted.map((album) => (
+          <section>
+            <header class="mb-4">
+              <p class="text-sm text-muted">
+                {dateFmt.format(album.data.date)}
+              </p>
+              <h2 class="text-xl font-semibold text-primary mt-1">
+                {album.data.title}
+              </h2>
+              {album.data.description && (
+                <p class="text-sm text-muted mt-2">{album.data.description}</p>
+              )}
+            </header>
+            <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {album.data.images.map((raw) => {
+                const img = normalize(raw);
+                return (
+                  <li class="aspect-square overflow-hidden rounded border border-default bg-surface-muted">
+                    <img
+                      src={img.src}
+                      alt={img.caption ?? album.data.title}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ))}
+      </div>
+    )
+  }
+</BaseLayout>

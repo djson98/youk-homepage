@@ -65,21 +65,21 @@ const projects = defineCollection({
   }),
 });
 
-const news = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/news' }),
+const gallery = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/gallery' }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
-    summary: z.string(),
-    image: z.string().optional(),
-    links: z
-      .array(
+    description: z.string().optional(),
+    images: z.array(
+      z.union([
+        z.string(),
         z.object({
-          label: z.string(),
-          url: z.string(),
-        })
-      )
-      .optional(),
+          src: z.string(),
+          caption: z.string().optional(),
+        }),
+      ])
+    ),
   }),
 });
 
@@ -113,7 +113,7 @@ export const collections = {
   publications,
   members,
   projects,
-  news,
+  gallery,
   lectures,
   career,
 };
