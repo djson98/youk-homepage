@@ -1,6 +1,6 @@
 ---
 name: "TBD"
-nameKo: "모집 중"
+nameKo: "—"
 position: "ms"
 researchFields:
   - "분자유전"

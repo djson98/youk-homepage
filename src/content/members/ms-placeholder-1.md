@@ -1,6 +1,6 @@
 ---
 name: "TBD"
-nameKo: "모집 중"
+nameKo: "—"
 position: "ms"
 researchFields:
   - "진단혈액"

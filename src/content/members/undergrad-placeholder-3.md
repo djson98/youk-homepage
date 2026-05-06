@@ -1,6 +1,6 @@
 ---
 name: "TBD"
-nameKo: "모집 중"
+nameKo: "—"
 position: "undergrad"
 researchFields:
   - "암진단"

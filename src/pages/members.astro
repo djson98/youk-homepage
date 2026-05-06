@@ -133,23 +133,44 @@ const ProfessorContent = professorEntry
                     aria-hidden="true"
                   />
                 )}
-                <div class="min-w-0">
+                <div class="min-w-0 flex-1 space-y-1">
                   <p class="font-medium text-primary truncate">
                     {m.data.nameKo ?? m.data.name}
                   </p>
-                  {m.data.researchFields && (
-                    <p class="text-xs text-muted mt-1 truncate">
-                      {m.data.researchFields.join(' · ')}
-                    </p>
-                  )}
-                  {m.data.email && (
-                    <a
-                      href={`mailto:${m.data.email}`}
-                      class="text-xs underline mt-1 inline-block break-all"
-                    >
-                      {m.data.email}
-                    </a>
-                  )}
+                  <p class="text-xs text-muted truncate">
+                    <span class="font-medium">관심 분야:</span>{' '}
+                    {m.data.researchFields && m.data.researchFields.length > 0
+                      ? m.data.researchFields.join(' · ')
+                      : '—'}
+                  </p>
+                  <p class="text-xs text-muted truncate">
+                    <span class="font-medium">이메일:</span>{' '}
+                    {m.data.email ? (
+                      <a
+                        href={`mailto:${m.data.email}`}
+                        class="underline break-all"
+                      >
+                        {m.data.email}
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </p>
+                  <p class="text-xs text-muted truncate">
+                    <span class="font-medium">홈페이지:</span>{' '}
+                    {m.data.homepage ? (
+                      <a
+                        href={m.data.homepage}
+                        target="_blank"
+                        rel="noopener"
+                        class="underline break-all"
+                      >
+                        링크
+                      </a>
+                    ) : (
+                      '—'
+                    )}
+                  </p>
                 </div>
               </li>
             ))}
