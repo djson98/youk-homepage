@@ -83,6 +83,17 @@ const gallery = defineCollection({
   }),
 });
 
+const news = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/news' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    summary: z.string().optional(),
+    link: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+  }),
+});
+
 const lectures = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/lectures' }),
   schema: z.object({
@@ -114,6 +125,7 @@ export const collections = {
   members,
   projects,
   gallery,
+  news,
   lectures,
   career,
 };

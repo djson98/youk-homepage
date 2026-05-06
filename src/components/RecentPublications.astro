@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  limit?: number;
+  href?: string;
+}
+
+const { limit = 5, href = '/publications' } = Astro.props;
+
+const all = await getCollection('publications');
+const recent = [...all]
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, limit);
+---
+
+<section class="space-y-4">
+  <header class="flex items-baseline justify-between">
+    <h2 class="text-lg font-semibold text-primary">Recent Publications</h2>
+    <a href={href} class="text-sm text-muted hover:underline">
+      모두 보기 →
+    </a>
+  </header>
+
+  {
+    recent.length === 0 ? (
+      <p class="text-muted">준비 중입니다.</p>
+    ) : (
+      <ul class="space-y-3">
+        {recent.map((pub) => (
+          <li class="border-b border-default pb-3">
+            <p class="font-medium text-primary leading-snug">
+              {pub.data.doi ? (
+                <a
+                  href={`https://doi.org/${pub.data.doi}`}
+                  target="_blank"
+                  rel="noopener"
+                  class="hover:underline"
+                >
+                  {pub.data.title}
+                </a>
+              ) : (
+                pub.data.title
+              )}
+            </p>
+            <p class="text-sm text-muted mt-1">
+              {pub.data.authors.slice(0, 4).join(', ')}
+              {pub.data.authors.length > 4 ? ' 외' : ''} ({pub.data.year})
+              {pub.data.journal ? ` · ${pub.data.journal}` : ''}
+            </p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>

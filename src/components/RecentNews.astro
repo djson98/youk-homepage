@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  limit?: number;
+  href?: string;
+}
+
+const { limit = 4, href = '/news' } = Astro.props;
+
+const all = await getCollection('news');
+const recent = [...all]
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, limit);
+
+const dateFmt = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<section class="space-y-4">
+  <header class="flex items-baseline justify-between">
+    <h2 class="text-lg font-semibold text-primary">News</h2>
+    <a href={href} class="text-sm text-muted hover:underline">
+      모두 보기 →
+    </a>
+  </header>
+
+  {
+    recent.length === 0 ? (
+      <p class="text-muted">준비 중입니다.</p>
+    ) : (
+      <ul class="space-y-3">
+        {recent.map((n) => (
+          <li class="border-b border-default pb-3">
+            <p class="text-xs text-muted">{dateFmt.format(n.data.date)}</p>
+            <p class="font-medium text-primary leading-snug mt-1">
+              {n.data.link ? (
+                <a
+                  href={n.data.link}
+                  target="_blank"
+                  rel="noopener"
+                  class="hover:underline"
+                >
+                  {n.data.title}
+                </a>
+              ) : (
+                n.data.title
+              )}
+            </p>
+            {n.data.summary && (
+              <p class="text-sm text-muted mt-1">{n.data.summary}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>
