@@ -1,0 +1,112 @@
+---
+import { siteConfig } from '../config/site.config';
+import Seo from '../components/Seo.astro';
+import NavBar from '../components/islands/NavBar.tsx';
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+
+// Map nav hrefs to section keys for toggling.
+const sectionByHref: Record<string, keyof typeof siteConfig.sections> = {
+  '/': 'home',
+  '/about': 'about',
+  '/members': 'members',
+  '/projects': 'projects',
+  '/publications': 'publications',
+  '/lectures': 'lectures',
+  '/news': 'news',
+  '/contact': 'contact',
+};
+
+const navItems = siteConfig.nav.items
+  .filter((item) => {
+    const sectionKey = sectionByHref[item.href];
+    if (!sectionKey) return true;
+    return siteConfig.sections[sectionKey];
+  })
+  .map((item) => ({ href: item.href, label: item.labelKo }));
+
+const activePath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <Seo
+      title={title}
+      description={description}
+      image={image}
+      pathname={activePath}
+    />
+    <script is:inline>
+      // Apply persisted theme before paint to avoid a flash.
+      try {
+        const saved = localStorage.getItem('theme');
+        const prefersDark =
+          window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      } catch {
+        /* noop */
+      }
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col bg-page text-primary transition-colors duration-300">
+    <NavBar
+      client:load
+      brandName={siteConfig.lab.nameKo}
+      brandHref="/"
+      brandLogo="/images/logo-hai-crop.png"
+      items={navItems}
+      activePath={activePath}
+    />
+
+    <main
+      class="flex-1 w-full max-w-7xl mx-auto px-3 md:px-8 pb-16 pt-20 md:pt-24 text-primary"
+      id="main-content"
+      role="main"
+    >
+      <slot />
+    </main>
+
+    <footer
+      class="bg-surface py-6 mt-auto border-t border-default transition-colors duration-300"
+    >
+      <div class="w-full max-w-7xl mx-auto px-3 md:px-8">
+        <div class="flex justify-between items-center gap-4">
+          <div class="text-xs md:text-sm text-muted-subtle">
+            <div class="max-w-2xl">
+              {
+                siteConfig.contact.address && (
+                  <div class="text-xs text-muted-subtle whitespace-pre-line mb-1 md:mb-2">
+                    {siteConfig.contact.address}
+                  </div>
+                )
+              }
+              <span class="block text-xs text-muted-subtle">
+                © {new Date().getFullYear()} {siteConfig.lab.nameKo} ·
+                <a
+                  href={`mailto:${siteConfig.professor.email}`}
+                  class="hover:text-accent"
+                >
+                  {siteConfig.professor.email}
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

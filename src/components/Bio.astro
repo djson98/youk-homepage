@@ -1,0 +1,52 @@
+---
+// Bio block — Astro presentational version of the Gatsby `bio.tsx` component.
+// Accepts professor/author info as props. Photo is a public-relative path
+// (e.g. `/images/profile-pic.png`) or an absolute URL.
+
+export interface Props {
+  name: string;
+  title?: string;
+  affiliation?: string;
+  email?: string;
+  photo?: string;
+  bio?: string;
+}
+
+const {
+  name,
+  title,
+  affiliation,
+  email,
+  photo,
+  bio,
+} = Astro.props;
+---
+
+<div class="bio flex items-start gap-4 mb-12">
+  {
+    photo && (
+      <img
+        src={photo}
+        alt={`${name} profile photo`}
+        width="96"
+        height="96"
+        class="bio-avatar w-24 h-24 rounded-full object-cover flex-shrink-0"
+      />
+    )
+  }
+  <div class="flex-1 min-w-0">
+    <h2 class="text-lg md:text-xl font-semibold text-primary mb-1">{name}</h2>
+    {title && <p class="text-sm text-muted mb-1">{title}</p>}
+    {affiliation && <p class="text-sm text-muted mb-1">{affiliation}</p>}
+    {
+      email && (
+        <p class="text-sm text-muted mb-2">
+          <a href={`mailto:${email}`} class="hover:text-accent">
+            {email}
+          </a>
+        </p>
+      )
+    }
+    {bio && <p class="text-sm md:text-base text-muted leading-relaxed">{bio}</p>}
+  </div>
+</div>

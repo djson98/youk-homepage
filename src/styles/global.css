@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+/* Tailwind 4 dark mode: opt-in via the .dark class on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─── Theme tokens (Tailwind 4 `@theme` block) ───────────────────────────
+   Maps to color utilities like `bg-page`, `text-primary`, `border-default`.
+   Light/dark hex values live below in :root and .dark for runtime toggling.
+   Ported from HAI Lab `tailwind.config.js` + `styles/global.css`.
+*/
+@theme {
+  --color-page: var(--color-page);
+  --color-page-muted: var(--color-page-muted);
+  --color-surface: var(--color-surface);
+  --color-surface-muted: var(--color-surface-muted);
+  --color-surface-subtle: var(--color-surface-subtle);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-muted: var(--color-muted);
+  --color-muted-subtle: var(--color-muted-subtle);
+  --color-default: var(--color-default);
+  --color-border-muted: var(--color-border-muted);
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-muted: var(--color-accent-muted);
+
+  --font-sans: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
+  --font-display: 'Poppins', 'Inter', system-ui, sans-serif;
+  --font-body: 'Source Sans Pro', 'Inter', system-ui, sans-serif;
+}
+
+/* Light palette */
+:root {
+  --color-page: #ffffff;
+  --color-page-muted: #eff6ff;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f9fafb;
+  --color-surface-subtle: #f3f4f6;
+  --color-primary: #111827;
+  --color-secondary: #1f2937;
+  --color-muted: #4b5563;
+  --color-muted-subtle: #6b7280;
+  --color-default: #e5e7eb;
+  --color-border-muted: #f3f4f6;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-muted: #eff6ff;
+}
+
+/* Dark palette (toggled via the `.dark` class on <html>) */
+.dark {
+  --color-page: #111827;
+  --color-page-muted: #111827;
+  --color-surface: #1f2937;
+  --color-surface-muted: #374151;
+  --color-surface-subtle: #374151;
+  --color-primary: #f3f4f6;
+  --color-secondary: #e5e7eb;
+  --color-muted: #9ca3af;
+  --color-muted-subtle: #6b7280;
+  --color-default: #4b5563;
+  --color-border-muted: #374151;
+  --color-accent: #60a5fa;
+  --color-accent-hover: #93c5fd;
+  --color-accent-muted: rgba(30, 58, 138, 0.4);
+}
+
+/* ─── Base typography ──────────────────────────────────────────────────── */
+html {
+  font-family: 'Inter', 'Noto Sans KR', system-ui, sans-serif;
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
+body {
+  font-family: 'Source Sans Pro', 'Inter', system-ui, sans-serif;
+  background-color: var(--color-page);
+  color: var(--color-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+}
+
+/* ─── Utility helpers used by ported components ────────────────────────── */
+.btn-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--color-default);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  transition: all 300ms;
+}
+.btn-badge:hover {
+  background-color: var(--color-surface-subtle);
+  color: var(--color-accent);
+}
+
+.btn-badge-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #93c5fd;
+  background-color: var(--color-accent-muted);
+  color: #1d4ed8;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  transition: all 300ms;
+}
+.dark .btn-badge-active {
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sticky-index {
+  will-change: transform;
+  transform: translateZ(0);
+}

@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/site.config';
+
+const c = siteConfig.contact;
+---
+
+<BaseLayout title="연락처">
+  <h1 class="text-2xl font-bold mb-4">연락처</h1>
+  <dl class="space-y-2">
+    <div>
+      <dt class="font-semibold">이메일</dt>
+      <dd>
+        <a href={`mailto:${c.email}`} class="text-blue-700 hover:underline">
+          {c.email}
+        </a>
+      </dd>
+    </div>
+    {
+      c.labLocation && (
+        <div>
+          <dt class="font-semibold">연구실</dt>
+          <dd>{c.labLocation}</dd>
+        </div>
+      )
+    }
+    {
+      c.address && (
+        <div>
+          <dt class="font-semibold">주소</dt>
+          <dd>{c.address}</dd>
+        </div>
+      )
+    }
+    {
+      c.phone && (
+        <div>
+          <dt class="font-semibold">전화</dt>
+          <dd>{c.phone}</dd>
+        </div>
+      )
+    }
+    {
+      c.fax && (
+        <div>
+          <dt class="font-semibold">팩스</dt>
+          <dd>{c.fax}</dd>
+        </div>
+      )
+    }
+  </dl>
+  {
+    c.mapEmbedUrl && (
+      <div class="mt-6">
+        <iframe
+          src={c.mapEmbedUrl}
+          class="w-full h-80 border-0"
+          loading="lazy"
+        />
+      </div>
+    )
+  }
+</BaseLayout>

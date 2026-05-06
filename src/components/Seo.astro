@@ -1,0 +1,49 @@
+---
+// SEO meta tags — Astro version of the Gatsby `seo.tsx` component.
+// Should be embedded inside the <head> of BaseLayout.astro.
+
+import { siteConfig } from '../config/site.config';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  pathname?: string;
+}
+
+const {
+  title,
+  description,
+  image,
+  pathname,
+} = Astro.props;
+
+const defaultTitle = siteConfig.lab.nameKo;
+const fullTitle =
+  title && title !== defaultTitle ? `${title} | ${defaultTitle}` : defaultTitle;
+
+const metaDescription =
+  description ?? siteConfig.lab.tagline ?? siteConfig.professor.affiliation;
+
+const ogImage = image ?? siteConfig.meta.ogImage ?? '';
+
+const canonical = new URL(
+  pathname ?? Astro.url.pathname,
+  siteConfig.meta.siteUrl
+).toString();
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={metaDescription} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={metaDescription} />
+<meta property="og:url" content={canonical} />
+{ogImage && <meta property="og:image" content={ogImage} />}
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={metaDescription} />
+{ogImage && <meta name="twitter:image" content={ogImage} />}
