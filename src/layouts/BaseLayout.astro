@@ -30,9 +30,10 @@ const navItems = siteConfig.nav.items
     if (!sectionKey) return true;
     return siteConfig.sections[sectionKey];
   })
-  .map((item) => ({ href: item.href, label: item.labelKo }));
+  .map((item) => ({ href: item.href, label: item.labelEn }));
 
 const activePath = Astro.url.pathname;
+const hasHero = Astro.slots.has('hero');
 ---
 
 <!doctype html>
@@ -71,8 +72,13 @@ const activePath = Astro.url.pathname;
       activePath={activePath}
     />
 
+    <slot name="hero" />
+
     <main
-      class="flex-1 w-full max-w-7xl mx-auto px-3 md:px-8 pb-16 pt-20 md:pt-24 text-primary"
+      class:list={[
+        'flex-1 w-full max-w-7xl mx-auto px-3 md:px-8 pb-16 text-primary',
+        hasHero ? 'pt-10' : 'pt-20 md:pt-24',
+      ]}
       id="main-content"
       role="main"
     >
