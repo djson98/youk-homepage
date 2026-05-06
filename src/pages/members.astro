@@ -1,8 +1,160 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const POSITION_LABEL: Record<string, string> = {
+  professor: '교수',
+  postdoc: '박사후연구원',
+  phd: '박사과정',
+  ms: '석사과정',
+  undergrad: '학부생',
+  alumni: '졸업생',
+};
+
+const POSITION_ORDER: Record<string, number> = {
+  professor: 0,
+  postdoc: 1,
+  phd: 2,
+  ms: 3,
+  undergrad: 4,
+  alumni: 5,
+};
+
+const all = await getCollection('members');
+const sorted = [...all].sort((a, b) => {
+  const oa = POSITION_ORDER[a.data.position] ?? 99;
+  const ob = POSITION_ORDER[b.data.position] ?? 99;
+  if (oa !== ob) return oa - ob;
+  return (a.data.order ?? 99) - (b.data.order ?? 99);
+});
+
+const groups = new Map<string, typeof sorted>();
+for (const m of sorted) {
+  const key = m.data.position;
+  if (!groups.has(key)) groups.set(key, [] as typeof sorted);
+  groups.get(key)!.push(m);
+}
+
+const professorEntry = sorted.find((m) => m.data.position === 'professor');
+const ProfessorContent = professorEntry
+  ? (await render(professorEntry)).Content
+  : null;
 ---
 
 <BaseLayout title="구성원">
-  <h1 class="text-2xl font-bold mb-4">구성원</h1>
-  <p>준비 중입니다.</p>
+  <h1 class="page-title mb-8">구성원</h1>
+
+  {
+    professorEntry && ProfessorContent && (
+      <section class="mb-12">
+        <h2 class="text-lg font-semibold text-primary mb-4">교수</h2>
+        <div class="flex flex-col sm:flex-row gap-6 items-start">
+          {professorEntry.data.photo && (
+            <img
+              src={professorEntry.data.photo}
+              alt={professorEntry.data.nameKo ?? professorEntry.data.name}
+              class="w-40 h-52 object-cover rounded border border-default flex-shrink-0"
+            />
+          )}
+          <div class="flex-1 min-w-0">
+            <p class="text-xl font-semibold text-primary">
+              {professorEntry.data.nameKo ?? professorEntry.data.name}
+              {professorEntry.data.nameKo && (
+                <span class="text-base text-muted ml-2 font-normal">
+                  {professorEntry.data.name}
+                </span>
+              )}
+            </p>
+            {professorEntry.data.researchFields &&
+              professorEntry.data.researchFields.length > 0 && (
+                <p class="text-sm text-muted mt-1">
+                  {professorEntry.data.researchFields.join(' · ')}
+                </p>
+              )}
+            <dl class="mt-3 text-sm space-y-1">
+              {professorEntry.data.email && (
+                <div>
+                  <dt class="inline font-medium text-primary">이메일:</dt>{' '}
+                  <dd class="inline">
+                    <a
+                      href={`mailto:${professorEntry.data.email}`}
+                      class="underline"
+                    >
+                      {professorEntry.data.email}
+                    </a>
+                  </dd>
+                </div>
+              )}
+              {professorEntry.data.homepage && (
+                <div>
+                  <dt class="inline font-medium text-primary">홈페이지:</dt>{' '}
+                  <dd class="inline">
+                    <a
+                      href={professorEntry.data.homepage}
+                      target="_blank"
+                      rel="noopener"
+                      class="underline"
+                    >
+                      KNUH 프로필
+                    </a>
+                  </dd>
+                </div>
+              )}
+            </dl>
+            <div class="prose prose-sm max-w-none mt-4">
+              <ProfessorContent />
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    Array.from(groups.entries())
+      .filter(([pos]) => pos !== 'professor')
+      .map(([pos, members]) => (
+        <section class="mb-10">
+          <h2 class="text-lg font-semibold text-primary mb-4">
+            {POSITION_LABEL[pos] ?? pos}
+          </h2>
+          <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {members.map((m) => (
+              <li class="border border-default rounded p-4 flex gap-3">
+                {m.data.photo ? (
+                  <img
+                    src={m.data.photo}
+                    alt={m.data.nameKo ?? m.data.name}
+                    class="w-16 h-20 object-cover rounded flex-shrink-0"
+                  />
+                ) : (
+                  <div
+                    class="w-16 h-20 rounded bg-surface-muted flex-shrink-0"
+                    aria-hidden="true"
+                  />
+                )}
+                <div class="min-w-0">
+                  <p class="font-medium text-primary truncate">
+                    {m.data.nameKo ?? m.data.name}
+                  </p>
+                  {m.data.researchFields && (
+                    <p class="text-xs text-muted mt-1 truncate">
+                      {m.data.researchFields.join(' · ')}
+                    </p>
+                  )}
+                  {m.data.email && (
+                    <a
+                      href={`mailto:${m.data.email}`}
+                      class="text-xs underline mt-1 inline-block break-all"
+                    >
+                      {m.data.email}
+                    </a>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+  }
 </BaseLayout>
