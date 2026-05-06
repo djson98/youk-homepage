@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/site.config';
+
+const KEYWORD_DESCRIPTIONS: Record<string, string> = {
+  진단혈액:
+    '말초혈액·골수 검사를 통한 혈액 질환 진단과 백혈병·림프종 등 혈액종양 분류 검사를 수행합니다.',
+  수혈의학:
+    '수혈 적합성 검사, 항체 동정, 수혈 부작용 평가 등 안전한 수혈을 위한 검사실 진단을 담당합니다.',
+  분자유전:
+    '암·유전성 질환의 분자 진단, NGS 기반 변이 검출과 임상 해석을 다룹니다.',
+  진단면역:
+    '자가면역질환·알러지·감염 진단을 위한 면역검사 패널과 결과 해석을 연구합니다.',
+  암진단:
+    '혈액학적·분자유전학적 접근으로 암을 조기 진단하고 치료 모니터링을 위한 검사실 지표를 개발합니다.',
+};
+
+const keywords = siteConfig.lab.keywords;
+---
+
+<BaseLayout title="연구">
+  <h1 class="page-title mb-4">연구</h1>
+  {
+    siteConfig.lab.tagline && (
+      <p class="text-muted mb-8">{siteConfig.lab.tagline}</p>
+    )
+  }
+
+  <section>
+    <h2 class="text-lg font-semibold text-primary mb-4">연구 분야</h2>
+    {
+      keywords.length === 0 ? (
+        <p class="text-muted">준비 중입니다.</p>
+      ) : (
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {keywords.map((kw) => (
+            <li class="border border-default rounded p-5">
+              <h3 class="font-semibold text-primary text-base">{kw}</h3>
+              {KEYWORD_DESCRIPTIONS[kw] && (
+                <p class="text-sm text-muted mt-2 leading-relaxed">
+                  {KEYWORD_DESCRIPTIONS[kw]}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+</BaseLayout>

@@ -6,6 +6,7 @@ const sectionLinks = siteConfig.nav.items.filter((item) => {
   if (item.href === '/') return false;
   const map: Record<string, keyof typeof siteConfig.sections> = {
     '/about': 'about',
+    '/research': 'research',
     '/members': 'members',
     '/projects': 'projects',
     '/publications': 'publications',
