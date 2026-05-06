@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/HeroSection.astro';
+import RecentResearch from '../components/RecentResearch.astro';
 import RecentPublications from '../components/RecentPublications.astro';
 import RecentNews from '../components/RecentNews.astro';
 ---
@@ -8,7 +9,8 @@ import RecentNews from '../components/RecentNews.astro';
 <BaseLayout>
   <HeroSection slot="hero" />
 
-  <div class="space-y-12">
+  <div class="space-y-16">
+    <RecentResearch />
     <RecentPublications limit={5} />
     <RecentNews limit={4} />
   </div>

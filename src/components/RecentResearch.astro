@@ -1,0 +1,72 @@
+---
+// Recent Research highlights — 좌측 설명 / 우측 큰 이미지 패턴.
+// 양식 도착 전 placeholder. 추후 content collection으로 전환 예정.
+
+interface Highlight {
+  title: string;
+  summary: string;
+  image?: string;
+  link?: string;
+}
+
+const highlights: Highlight[] = [
+  {
+    title: '최근 연구 하이라이트 1',
+    summary:
+      '연구 주제 / 핵심 발견 / 임상적 의미 등을 2~3줄 분량으로 적어주세요. 우측 큰 이미지는 논문 figure, 실험 사진, 다이어그램 등을 권장합니다.',
+  },
+  {
+    title: '최근 연구 하이라이트 2',
+    summary:
+      '두 번째 하이라이트입니다. 카드 개수는 자유롭게 늘릴 수 있고, 각 카드마다 이미지·설명·외부 링크(논문 DOI 등)를 연결할 수 있습니다.',
+  },
+];
+---
+
+<section class="space-y-8">
+  <header class="flex items-baseline justify-between">
+    <h2 class="text-lg font-semibold text-primary">Recent Research</h2>
+    <a href="/research" class="text-sm text-muted hover:underline">
+      모두 보기 →
+    </a>
+  </header>
+
+  <ul class="space-y-12">
+    {
+      highlights.map((h, i) => (
+        <li
+          class:list={[
+            'grid gap-6 md:gap-10 md:grid-cols-2 items-center',
+            i % 2 === 1 ? 'md:[&>div:first-child]:order-2' : '',
+          ]}
+        >
+          <div class="space-y-3">
+            <h3 class="text-xl font-semibold text-primary">{h.title}</h3>
+            <p class="text-sm text-muted leading-relaxed">{h.summary}</p>
+            {h.link && (
+              <a
+                href={h.link}
+                target="_blank"
+                rel="noopener"
+                class="inline-block text-sm text-primary underline hover:no-underline"
+              >
+                자세히 보기 →
+              </a>
+            )}
+          </div>
+          <div class="aspect-[4/3] bg-surface-muted border border-default rounded flex items-center justify-center">
+            {h.image ? (
+              <img
+                src={h.image}
+                alt={h.title}
+                class="w-full h-full object-cover rounded"
+              />
+            ) : (
+              <span class="text-xs text-muted-subtle">이미지 자리</span>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>
