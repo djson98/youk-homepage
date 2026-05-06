@@ -3,10 +3,12 @@
 /* Tailwind 4 dark mode: opt-in via the .dark class on <html>. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Monochrome palette — neutral greys until brand color is decided.
+   To rebrand: only the primary/accent values need to change in :root and .dark. */
+
 /* ─── Theme tokens (Tailwind 4 `@theme` block) ───────────────────────────
    Maps to color utilities like `bg-page`, `text-primary`, `border-default`.
    Light/dark hex values live below in :root and .dark for runtime toggling.
-   Ported from HAI Lab `tailwind.config.js` + `styles/global.css`.
 */
 @theme {
   --color-page: var(--color-page);
@@ -29,40 +31,40 @@
   --font-body: 'Source Sans Pro', 'Inter', system-ui, sans-serif;
 }
 
-/* Light palette */
+/* Light palette — neutral grey */
 :root {
   --color-page: #ffffff;
-  --color-page-muted: #eff6ff;
+  --color-page-muted: #fafafa;
   --color-surface: #ffffff;
-  --color-surface-muted: #f9fafb;
-  --color-surface-subtle: #f3f4f6;
-  --color-primary: #111827;
-  --color-secondary: #1f2937;
-  --color-muted: #4b5563;
-  --color-muted-subtle: #6b7280;
-  --color-default: #e5e7eb;
-  --color-border-muted: #f3f4f6;
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-accent-muted: #eff6ff;
+  --color-surface-muted: #f5f5f5;
+  --color-surface-subtle: #f9f9f9;
+  --color-primary: #1a1a1a;
+  --color-secondary: #525252;
+  --color-muted: #525252;
+  --color-muted-subtle: #737373;
+  --color-default: #e5e5e5;
+  --color-border-muted: #f0f0f0;
+  --color-accent: #e5e5e5;
+  --color-accent-hover: #d4d4d4;
+  --color-accent-muted: #f5f5f5;
 }
 
-/* Dark palette (toggled via the `.dark` class on <html>) */
+/* Dark palette — neutral grey (toggled via the `.dark` class on <html>) */
 .dark {
-  --color-page: #111827;
-  --color-page-muted: #111827;
-  --color-surface: #1f2937;
-  --color-surface-muted: #374151;
-  --color-surface-subtle: #374151;
-  --color-primary: #f3f4f6;
-  --color-secondary: #e5e7eb;
-  --color-muted: #9ca3af;
-  --color-muted-subtle: #6b7280;
-  --color-default: #4b5563;
-  --color-border-muted: #374151;
-  --color-accent: #60a5fa;
-  --color-accent-hover: #93c5fd;
-  --color-accent-muted: rgba(30, 58, 138, 0.4);
+  --color-page: #0a0a0a;
+  --color-page-muted: #171717;
+  --color-surface: #171717;
+  --color-surface-muted: #1f1f1f;
+  --color-surface-subtle: #141414;
+  --color-primary: #fafafa;
+  --color-secondary: #a3a3a3;
+  --color-muted: #a3a3a3;
+  --color-muted-subtle: #737373;
+  --color-default: #262626;
+  --color-border-muted: #1f1f1f;
+  --color-accent: #262626;
+  --color-accent-hover: #404040;
+  --color-accent-muted: #171717;
 }
 
 /* ─── Base typography ──────────────────────────────────────────────────── */
@@ -97,8 +99,8 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 300ms;
 }
 .btn-badge:hover {
-  background-color: var(--color-surface-subtle);
-  color: var(--color-accent);
+  background-color: var(--color-accent-hover);
+  color: var(--color-primary);
 }
 
 .btn-badge-active {
@@ -109,15 +111,15 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 500;
-  border: 1px solid #93c5fd;
-  background-color: var(--color-accent-muted);
-  color: #1d4ed8;
+  border: 1px solid var(--color-default);
+  background-color: var(--color-accent);
+  color: var(--color-primary);
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   transition: all 300ms;
 }
 .dark .btn-badge-active {
-  color: #ffffff;
-  border-color: #3b82f6;
+  color: var(--color-primary);
+  border-color: var(--color-default);
 }
 
 .scrollbar-hide {
