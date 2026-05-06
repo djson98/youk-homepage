@@ -123,7 +123,6 @@ export const siteConfig: SiteConfig = {
       { href: "/publications", labelKo: "논문", labelEn: "Publications" },
       { href: "/lectures", labelKo: "강의", labelEn: "Lectures" },
       { href: "/gallery", labelKo: "갤러리", labelEn: "Gallery" },
-      { href: "/news", labelKo: "소식", labelEn: "News" },
       { href: "/contact", labelKo: "연락처", labelEn: "Contacts" },
     ],
   },
