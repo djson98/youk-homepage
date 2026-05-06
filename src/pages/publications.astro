@@ -1,36 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import PublicationTimeline, {
-  type Publication,
-} from '../components/islands/PublicationTimeline.tsx';
 
 const pubs = await getCollection('publications');
-
-const timelineData: Publication[] = pubs.map((entry) => ({
-  id: entry.id,
-  slug: entry.id,
-  title: entry.data.title,
-  authors: entry.data.authors,
-  journal: entry.data.journal,
-  year: entry.data.year,
-  doi: entry.data.doi,
-  type: entry.data.type,
-  isPreprint: entry.data.isPreprint,
-  pdf: entry.data.pdf,
-}));
-
 const sorted = [...pubs].sort((a, b) => b.data.year - a.data.year);
 ---
 
 <BaseLayout title="논문">
   <h1 class="page-title mb-6">논문</h1>
-
-  {
-    timelineData.length > 0 && (
-      <PublicationTimeline client:load publications={timelineData} />
-    )
-  }
 
   {
     sorted.length === 0 ? (
