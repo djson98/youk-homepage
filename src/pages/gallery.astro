@@ -11,8 +11,18 @@ const dateFmt = new Intl.DateTimeFormat('ko-KR', {
 });
 
 const PLACEHOLDER_HEIGHTS = [
-  'h-72', 'h-96', 'h-80', 'h-[28rem]', 'h-64', 'h-[32rem]',
-  'h-80', 'h-[26rem]', 'h-72', 'h-96', 'h-80', 'h-[30rem]',
+  'h-72',
+  'h-96',
+  'h-80',
+  'h-[28rem]',
+  'h-64',
+  'h-[32rem]',
+  'h-80',
+  'h-[26rem]',
+  'h-72',
+  'h-96',
+  'h-80',
+  'h-[30rem]',
 ];
 ---
 
@@ -22,13 +32,13 @@ const PLACEHOLDER_HEIGHTS = [
   {
     sorted.length === 0 ? (
       <div
-        class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4"
+        class="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3"
         aria-label="갤러리 placeholder"
       >
         {PLACEHOLDER_HEIGHTS.map((h) => (
           <div
             class:list={[
-              'break-inside-avoid bg-surface-muted border border-default rounded',
+              'bg-surface-muted border-default break-inside-avoid rounded border',
               h,
             ]}
             aria-hidden="true"
@@ -40,27 +50,27 @@ const PLACEHOLDER_HEIGHTS = [
         {sorted.map((album) => (
           <section>
             <header class="mb-4">
-              <p class="text-sm text-muted">
+              <p class="text-muted text-sm">
                 {dateFmt.format(album.data.date)}
               </p>
-              <h2 class="text-xl font-semibold text-primary mt-1">
+              <h2 class="text-primary mt-1 text-xl font-semibold">
                 {album.data.title}
               </h2>
               {album.data.description && (
-                <p class="text-sm text-muted mt-2">{album.data.description}</p>
+                <p class="text-muted mt-2 text-sm">{album.data.description}</p>
               )}
             </header>
-            <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+            <div class="columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3">
               {album.data.images.map((img) => (
                 <figure class="break-inside-avoid">
                   <img
                     src={img.src}
                     alt={img.caption ?? album.data.title}
-                    class="w-full h-auto rounded border border-default"
+                    class="border-default h-auto w-full rounded border"
                     loading="lazy"
                   />
                   {img.caption && (
-                    <figcaption class="text-xs text-muted mt-1">
+                    <figcaption class="text-muted mt-1 text-xs">
                       {img.caption}
                     </figcaption>
                   )}

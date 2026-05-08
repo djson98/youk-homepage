@@ -79,7 +79,8 @@ export const member = defineType({
     defineField({
       name: 'order',
       title: '정렬 순서',
-      description: '같은 직책 내에서 보여줄 순서 (작은 숫자가 먼저). 비워두면 자동',
+      description:
+        '같은 직책 내에서 보여줄 순서 (작은 숫자가 먼저). 비워두면 자동',
       type: 'number',
     }),
   ],
@@ -94,7 +95,12 @@ export const member = defineType({
     },
   ],
   preview: {
-    select: { title: 'nameKo', name: 'name', position: 'position', media: 'photo' },
+    select: {
+      title: 'nameKo',
+      name: 'name',
+      position: 'position',
+      media: 'photo',
+    },
     prepare({ title, name, position, media }) {
       return {
         title: title || name,

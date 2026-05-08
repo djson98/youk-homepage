@@ -20,10 +20,8 @@ const dateFmt = new Intl.DateTimeFormat('ko-KR', {
 
 <section class="space-y-4">
   <header class="flex items-baseline justify-between">
-    <h2 class="text-lg font-semibold text-primary">News</h2>
-    <a href={href} class="text-sm text-muted hover:underline">
-      모두 보기 →
-    </a>
+    <h2 class="text-primary text-lg font-semibold">News</h2>
+    <a href={href} class="text-muted text-sm hover:underline"> 모두 보기 → </a>
   </header>
 
   {
@@ -32,9 +30,9 @@ const dateFmt = new Intl.DateTimeFormat('ko-KR', {
     ) : (
       <ul class="space-y-3">
         {recent.map((n) => (
-          <li class="border-b border-default pb-3">
-            <p class="text-xs text-muted">{dateFmt.format(n.data.date)}</p>
-            <p class="font-medium text-primary leading-snug mt-1">
+          <li class="border-default border-b pb-3">
+            <p class="text-muted text-xs">{dateFmt.format(n.data.date)}</p>
+            <p class="text-primary mt-1 leading-snug font-medium">
               {n.data.link ? (
                 <a
                   href={n.data.link}
@@ -49,7 +47,7 @@ const dateFmt = new Intl.DateTimeFormat('ko-KR', {
               )}
             </p>
             {n.data.summary && (
-              <p class="text-sm text-muted mt-1">{n.data.summary}</p>
+              <p class="text-muted mt-1 text-sm">{n.data.summary}</p>
             )}
           </li>
         ))}

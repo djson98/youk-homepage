@@ -127,17 +127,19 @@ function parseCliOrcid(argv: string[]): string | undefined {
 }
 
 function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .normalize('NFKD')
-    // Strip diacritics
-    .replace(/[̀-ͯ]/g, '')
-    // Anything that isn't a-z / 0-9 becomes a separator
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 60)
-    .replace(/-+$/g, '');
+  return (
+    input
+      .toLowerCase()
+      .normalize('NFKD')
+      // Strip diacritics
+      .replace(/[̀-ͯ]/g, '')
+      // Anything that isn't a-z / 0-9 becomes a separator
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 60)
+      .replace(/-+$/g, '')
+  );
 }
 
 function mapType(rawType: string | null | undefined): PublicationType {
@@ -159,7 +161,9 @@ function mapType(rawType: string | null | undefined): PublicationType {
   }
 }
 
-function extractDoi(ids: OrcidExternalIds | null | undefined): string | undefined {
+function extractDoi(
+  ids: OrcidExternalIds | null | undefined
+): string | undefined {
   const list = ids?.['external-id'];
   if (!Array.isArray(list)) return undefined;
   const doi = list.find(
@@ -326,7 +330,7 @@ async function writePublications(pubs: Publication[]): Promise<string[]> {
   const written: string[] = [];
   const used = new Set<string>();
   for (const pub of pubs) {
-    let base = `${pub.year}-${slugify(pub.title) || 'untitled'}`;
+    const base = `${pub.year}-${slugify(pub.title) || 'untitled'}`;
     let filename = `${base}.md`;
     let n = 2;
     while (used.has(filename)) {

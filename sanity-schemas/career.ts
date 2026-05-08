@@ -51,7 +51,12 @@ export const career = defineType({
     },
   ],
   preview: {
-    select: { role: 'role', org: 'organization', start: 'startDate', end: 'endDate' },
+    select: {
+      role: 'role',
+      org: 'organization',
+      start: 'startDate',
+      end: 'endDate',
+    },
     prepare({ role, org, start, end }) {
       const period = end ? `${start} – ${end}` : `${start} – 현재`;
       return { title: `${role} · ${org}`, subtitle: period };

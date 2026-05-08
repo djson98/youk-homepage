@@ -39,9 +39,9 @@ const YearFilter: React.FC<YearFilterProps> = ({
   return (
     <div className="mb-2 md:mb-6">
       <div className="bg-surface-muted rounded-lg p-1.5 md:p-4">
-        <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-8">
+        <div className="flex flex-col items-center justify-center gap-3 md:flex-row md:gap-8">
           <div className="flex-1 text-center">
-            <h3 className="text-xs font-normal text-secondary mb-1 md:mb-2">
+            <h3 className="text-secondary mb-1 text-xs font-normal md:mb-2">
               {typeLabel}
             </h3>
             <div className="flex flex-wrap justify-center gap-0.5 md:gap-2">
@@ -50,11 +50,13 @@ const YearFilter: React.FC<YearFilterProps> = ({
                   key={type}
                   onClick={() => onTypeChange(type)}
                   className={`whitespace-nowrap ${
-                    selectedTypes.includes(type) ? 'btn-badge-active' : 'btn-badge'
+                    selectedTypes.includes(type)
+                      ? 'btn-badge-active'
+                      : 'btn-badge'
                   }`}
                 >
                   {selectedTypes.includes(type) && (
-                    <FaCheck className="w-2 h-2" />
+                    <FaCheck className="h-2 w-2" />
                   )}
                   {type}
                 </button>
@@ -65,14 +67,14 @@ const YearFilter: React.FC<YearFilterProps> = ({
           <div className="flex-1 text-center">
             <div className="flex items-center justify-center space-x-4">
               <div className="text-center">
-                <h3 className="text-xs font-normal text-secondary mb-1 md:mb-2">
+                <h3 className="text-secondary mb-1 text-xs font-normal md:mb-2">
                   Start
                 </h3>
                 <select
                   id="startYear"
                   value={startYear}
                   onChange={(e) => onStartYearChange(e.target.value)}
-                  className="px-1 py-0.5 bg-surface border border-default rounded-md text-xs font-normal text-muted focus:outline-none focus:border-accent hover:border-default transition-all duration-300 min-w-[70px] md:min-w-[100px]"
+                  className="bg-surface border-default text-muted focus:border-accent hover:border-default min-w-[70px] rounded-md border px-1 py-0.5 text-xs font-normal transition-all duration-300 focus:outline-none md:min-w-[100px]"
                 >
                   {startYearOptions.map((year) => (
                     <option key={year} value={year}>
@@ -82,19 +84,19 @@ const YearFilter: React.FC<YearFilterProps> = ({
                 </select>
               </div>
 
-              <span className="text-sm md:text-xl text-muted-subtle font-light mt-3 md:mt-6">
+              <span className="text-muted-subtle mt-3 text-sm font-light md:mt-6 md:text-xl">
                 —
               </span>
 
               <div className="text-center">
-                <h3 className="text-xs font-normal text-secondary mb-1 md:mb-2">
+                <h3 className="text-secondary mb-1 text-xs font-normal md:mb-2">
                   End
                 </h3>
                 <select
                   id="endYear"
                   value={endYear}
                   onChange={(e) => onEndYearChange(e.target.value)}
-                  className="px-1 py-0.5 bg-surface border border-default rounded-md text-xs font-normal text-muted focus:outline-none focus:border-accent hover:border-default transition-all duration-300 min-w-[70px] md:min-w-[100px]"
+                  className="bg-surface border-default text-muted focus:border-accent hover:border-default min-w-[70px] rounded-md border px-1 py-0.5 text-xs font-normal transition-all duration-300 focus:outline-none md:min-w-[100px]"
                 >
                   <option value="">Today</option>
                   {endYearOptions.map((year) => (

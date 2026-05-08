@@ -11,12 +11,7 @@ export interface Props {
   pathname?: string;
 }
 
-const {
-  title,
-  description,
-  image,
-  pathname,
-} = Astro.props;
+const { title, description, image, pathname } = Astro.props;
 
 const defaultTitle = siteConfig.lab.nameKo;
 const fullTitle =

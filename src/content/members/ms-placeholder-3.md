@@ -1,9 +1,9 @@
 ---
-name: "TBD"
-nameKo: "—"
-position: "ms"
+name: 'TBD'
+nameKo: '—'
+position: 'ms'
 researchFields:
-  - "진단면역"
+  - '진단면역'
 order: 3
 ---
 

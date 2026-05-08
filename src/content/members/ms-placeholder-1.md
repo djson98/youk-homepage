@@ -1,10 +1,10 @@
 ---
-name: "TBD"
-nameKo: "—"
-position: "ms"
+name: 'TBD'
+nameKo: '—'
+position: 'ms'
 researchFields:
-  - "진단혈액"
-  - "수혈의학"
+  - '진단혈액'
+  - '수혈의학'
 order: 1
 ---
 

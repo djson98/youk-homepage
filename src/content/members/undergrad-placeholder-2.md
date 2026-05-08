@@ -1,9 +1,9 @@
 ---
-name: "TBD"
-nameKo: "—"
-position: "undergrad"
+name: 'TBD'
+nameKo: '—'
+position: 'undergrad'
 researchFields:
-  - "수혈의학"
+  - '수혈의학'
 order: 2
 ---
 

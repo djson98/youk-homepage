@@ -72,17 +72,17 @@ const BibtexButton: React.FC<BibtexButtonProps> = ({
         aria-label={`Copy BibTeX for ${publication.title}`}
         title="BibTeX 복사"
       >
-        <HiOutlineClipboardCopy className="w-3.5 h-3.5" aria-hidden />
+        <HiOutlineClipboardCopy className="h-3.5 w-3.5" aria-hidden />
         <span>{copied ? 'BibTeX 복사됨' : 'BibTeX'}</span>
       </button>
       <button
         type="button"
         onClick={onDownload}
-        className="inline-flex items-center text-xs px-1.5 py-1 rounded text-muted hover:text-primary hover:bg-surface-muted transition-colors"
+        className="text-muted hover:text-primary hover:bg-surface-muted inline-flex items-center rounded px-1.5 py-1 text-xs transition-colors"
         aria-label={`Download BibTeX file for ${publication.title}`}
         title=".bib 파일 다운로드"
       >
-        <HiOutlineDownload className="w-3.5 h-3.5" aria-hidden />
+        <HiOutlineDownload className="h-3.5 w-3.5" aria-hidden />
       </button>
     </span>
   );

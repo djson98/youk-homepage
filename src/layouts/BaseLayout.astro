@@ -66,7 +66,9 @@ const hasHero = Astro.slots.has('hero');
       }
     </script>
   </head>
-  <body class="min-h-screen flex flex-col bg-page text-primary transition-colors duration-300">
+  <body
+    class="bg-page text-primary flex min-h-screen flex-col transition-colors duration-300"
+  >
     <NavBar
       client:load
       brandName={siteConfig.lab.nameKo}
@@ -80,7 +82,7 @@ const hasHero = Astro.slots.has('hero');
 
     <main
       class:list={[
-        'flex-1 w-full max-w-7xl mx-auto px-3 md:px-8 pb-16 text-primary',
+        'text-primary mx-auto w-full max-w-7xl flex-1 px-3 pb-16 md:px-8',
         hasHero ? 'pt-10' : 'pt-20 md:pt-24',
       ]}
       id="main-content"
@@ -90,21 +92,22 @@ const hasHero = Astro.slots.has('hero');
     </main>
 
     <footer
-      class="bg-surface py-6 mt-auto border-t border-default transition-colors duration-300"
+      class="bg-surface border-default mt-auto border-t py-6 transition-colors duration-300"
     >
-      <div class="w-full max-w-7xl mx-auto px-3 md:px-8">
-        <div class="flex justify-between items-center gap-4">
-          <div class="text-xs md:text-sm text-muted-subtle">
+      <div class="mx-auto w-full max-w-7xl px-3 md:px-8">
+        <div class="flex items-center justify-between gap-4">
+          <div class="text-muted-subtle text-xs md:text-sm">
             <div class="max-w-2xl">
               {
                 siteConfig.contact.address && (
-                  <div class="text-xs text-muted-subtle whitespace-pre-line mb-1 md:mb-2">
+                  <div class="text-muted-subtle mb-1 text-xs whitespace-pre-line md:mb-2">
                     {siteConfig.contact.address}
                   </div>
                 )
               }
-              <span class="block text-xs text-muted-subtle">
-                © {new Date().getFullYear()} {siteConfig.lab.nameKo} ·
+              <span class="text-muted-subtle block text-xs">
+                © {new Date().getFullYear()}
+                {siteConfig.lab.nameKo} ·
                 <a
                   href={`mailto:${siteConfig.professor.email}`}
                   class="hover:text-accent"

@@ -44,34 +44,34 @@ const professorEntry = sorted.find((m) => m.data.position === 'professor');
   {
     professorEntry && (
       <section class="mb-12">
-        <h2 class="text-lg font-semibold text-primary mb-4">교수</h2>
-        <div class="flex flex-col sm:flex-row gap-6 items-start">
+        <h2 class="text-primary mb-4 text-lg font-semibold">교수</h2>
+        <div class="flex flex-col items-start gap-6 sm:flex-row">
           {professorEntry.data.photo && (
             <img
               src={professorEntry.data.photo}
               alt={professorEntry.data.nameKo ?? professorEntry.data.name}
-              class="w-40 h-52 object-cover rounded border border-default flex-shrink-0"
+              class="border-default h-52 w-40 flex-shrink-0 rounded border object-cover"
             />
           )}
-          <div class="flex-1 min-w-0">
-            <p class="text-xl font-semibold text-primary">
+          <div class="min-w-0 flex-1">
+            <p class="text-primary text-xl font-semibold">
               {professorEntry.data.nameKo ?? professorEntry.data.name}
               {professorEntry.data.nameKo && (
-                <span class="text-base text-muted ml-2 font-normal">
+                <span class="text-muted ml-2 text-base font-normal">
                   {professorEntry.data.name}
                 </span>
               )}
             </p>
             {professorEntry.data.researchFields &&
               professorEntry.data.researchFields.length > 0 && (
-                <p class="text-sm text-muted mt-1">
+                <p class="text-muted mt-1 text-sm">
                   {professorEntry.data.researchFields.join(' · ')}
                 </p>
               )}
-            <dl class="mt-3 text-sm space-y-1">
+            <dl class="mt-3 space-y-1 text-sm">
               {professorEntry.data.email && (
                 <div>
-                  <dt class="inline font-medium text-primary">이메일:</dt>{' '}
+                  <dt class="text-primary inline font-medium">이메일:</dt>{' '}
                   <dd class="inline">
                     <a
                       href={`mailto:${professorEntry.data.email}`}
@@ -84,7 +84,7 @@ const professorEntry = sorted.find((m) => m.data.position === 'professor');
               )}
               {professorEntry.data.homepage && (
                 <div>
-                  <dt class="inline font-medium text-primary">홈페이지:</dt>{' '}
+                  <dt class="text-primary inline font-medium">홈페이지:</dt>{' '}
                   <dd class="inline">
                     <a
                       href={professorEntry.data.homepage}
@@ -99,7 +99,7 @@ const professorEntry = sorted.find((m) => m.data.position === 'professor');
               )}
             </dl>
             {professorEntry.data.bio && (
-              <div class="prose prose-sm max-w-none mt-4 whitespace-pre-line text-primary">
+              <div class="prose prose-sm text-primary mt-4 max-w-none whitespace-pre-line">
                 {professorEntry.data.bio}
               </div>
             )}
@@ -114,40 +114,40 @@ const professorEntry = sorted.find((m) => m.data.position === 'professor');
       .filter(([pos]) => pos !== 'professor')
       .map(([pos, members]) => (
         <section class="mb-10">
-          <h2 class="text-lg font-semibold text-primary mb-4">
+          <h2 class="text-primary mb-4 text-lg font-semibold">
             {POSITION_LABEL[pos] ?? pos}
           </h2>
-          <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {members.map((m) => (
-              <li class="border border-default rounded p-4 flex gap-3">
+              <li class="border-default flex gap-3 rounded border p-4">
                 {m.data.photo ? (
                   <img
                     src={m.data.photo}
                     alt={m.data.nameKo ?? m.data.name}
-                    class="w-16 h-20 object-cover rounded flex-shrink-0"
+                    class="h-20 w-16 flex-shrink-0 rounded object-cover"
                   />
                 ) : (
                   <div
-                    class="w-16 h-20 rounded bg-surface-muted flex-shrink-0"
+                    class="bg-surface-muted h-20 w-16 flex-shrink-0 rounded"
                     aria-hidden="true"
                   />
                 )}
                 <div class="min-w-0 flex-1 space-y-1">
-                  <p class="font-medium text-primary truncate">
+                  <p class="text-primary truncate font-medium">
                     {m.data.nameKo ?? m.data.name}
                   </p>
-                  <p class="text-xs text-muted truncate">
+                  <p class="text-muted truncate text-xs">
                     <span class="font-medium">관심 분야:</span>{' '}
                     {m.data.researchFields && m.data.researchFields.length > 0
                       ? m.data.researchFields.join(' · ')
                       : '—'}
                   </p>
-                  <p class="text-xs text-muted truncate">
+                  <p class="text-muted truncate text-xs">
                     <span class="font-medium">이메일:</span>{' '}
                     {m.data.email ? (
                       <a
                         href={`mailto:${m.data.email}`}
-                        class="underline break-all"
+                        class="break-all underline"
                       >
                         {m.data.email}
                       </a>
@@ -155,14 +155,14 @@ const professorEntry = sorted.find((m) => m.data.position === 'professor');
                       '—'
                     )}
                   </p>
-                  <p class="text-xs text-muted truncate">
+                  <p class="text-muted truncate text-xs">
                     <span class="font-medium">홈페이지:</span>{' '}
                     {m.data.homepage ? (
                       <a
                         href={m.data.homepage}
                         target="_blank"
                         rel="noopener"
-                        class="underline break-all"
+                        class="break-all underline"
                       >
                         링크
                       </a>

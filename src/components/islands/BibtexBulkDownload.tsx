@@ -34,14 +34,12 @@ const BibtexBulkDownload: React.FC<BibtexBulkDownloadProps> = ({
     <button
       type="button"
       onClick={onDownload}
-      className="inline-flex items-center gap-2 text-sm px-3 py-1.5 rounded-md border border-default text-muted hover:text-primary hover:border-accent-hover transition-colors"
+      className="border-default text-muted hover:text-primary hover:border-accent-hover inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm transition-colors"
       aria-label={label}
     >
-      <HiOutlineDownload className="w-4 h-4" aria-hidden />
+      <HiOutlineDownload className="h-4 w-4" aria-hidden />
       <span>{label}</span>
-      <span className="text-xs text-muted-subtle">
-        ({publications.length})
-      </span>
+      <span className="text-muted-subtle text-xs">({publications.length})</span>
     </button>
   );
 };

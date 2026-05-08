@@ -56,28 +56,28 @@ const milestones: MilestoneItem[] = [
 <BaseLayout title="About">
   <h1 class="page-title mb-4">About</h1>
 
-  <p class="text-muted leading-relaxed max-w-3xl mb-16">
+  <p class="text-muted mb-16 max-w-3xl leading-relaxed">
     {lab.nameKo}은 {prof.affiliation}에 소속된 연구실입니다. 진단검사의학을
     축으로 임상 현장에서 발생하는 진단 문제를 다학제 협업으로 풀어갑니다.
   </p>
 
-  <section class="mb-16 grid grid-cols-1 md:grid-cols-2 gap-10">
+  <section class="mb-16 grid grid-cols-1 gap-10 md:grid-cols-2">
     <div>
-      <h2 class="text-lg font-semibold text-primary mb-3">Mission</h2>
+      <h2 class="text-primary mb-3 text-lg font-semibold">Mission</h2>
       <p class="text-primary leading-relaxed">{mission}</p>
     </div>
     <div>
-      <h2 class="text-lg font-semibold text-primary mb-3">Vision</h2>
+      <h2 class="text-primary mb-3 text-lg font-semibold">Vision</h2>
       <p class="text-primary leading-relaxed">{vision}</p>
     </div>
   </section>
 
   <section class="mb-16">
-    <h2 class="text-lg font-semibold text-primary mb-6">Research Keywords</h2>
+    <h2 class="text-primary mb-6 text-lg font-semibold">Research Keywords</h2>
     <ul class="flex flex-wrap gap-2">
       {
         lab.keywords.map((kw) => (
-          <li class="px-3 py-1 border border-default rounded-full text-sm text-primary bg-surface">
+          <li class="border-default text-primary bg-surface rounded-full border px-3 py-1 text-sm">
             {kw}
           </li>
         ))
@@ -86,13 +86,13 @@ const milestones: MilestoneItem[] = [
   </section>
 
   <section class="mb-16">
-    <h2 class="text-lg font-semibold text-primary mb-6">Guiding Principles</h2>
-    <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <h2 class="text-primary mb-6 text-lg font-semibold">Guiding Principles</h2>
+    <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
       {
         pillars.map((p) => (
-          <li class="border border-default rounded p-5 bg-surface">
-            <h3 class="text-base font-semibold text-primary">{p.title}</h3>
-            <p class="text-sm text-primary leading-relaxed mt-2">
+          <li class="border-default bg-surface rounded border p-5">
+            <h3 class="text-primary text-base font-semibold">{p.title}</h3>
+            <p class="text-primary mt-2 text-sm leading-relaxed">
               {p.description}
             </p>
           </li>
@@ -102,16 +102,16 @@ const milestones: MilestoneItem[] = [
   </section>
 
   <section class="mb-16">
-    <h2 class="text-lg font-semibold text-primary mb-6">Milestones</h2>
-    <ul class="space-y-4 border-l border-default pl-6 max-w-2xl">
+    <h2 class="text-primary mb-6 text-lg font-semibold">Milestones</h2>
+    <ul class="border-default max-w-2xl space-y-4 border-l pl-6">
       {
         milestones.map((m) => (
           <li class="relative">
             <span
-              class="absolute -left-[1.6rem] top-1.5 w-2 h-2 rounded-full bg-primary"
+              class="bg-primary absolute top-1.5 -left-[1.6rem] h-2 w-2 rounded-full"
               aria-hidden="true"
             />
-            <p class="text-sm text-muted">{m.year}</p>
+            <p class="text-muted text-sm">{m.year}</p>
             <p class="text-primary leading-relaxed">{m.text}</p>
           </li>
         ))
@@ -120,15 +120,15 @@ const milestones: MilestoneItem[] = [
   </section>
 
   <section
-    class="border-t border-default pt-10 flex flex-col sm:flex-row gap-4 sm:items-baseline sm:justify-between"
+    class="border-default flex flex-col gap-4 border-t pt-10 sm:flex-row sm:items-baseline sm:justify-between"
   >
-    <p class="text-muted text-sm max-w-xl">
-      대학원생·학부 연구생·연수의 모집은 상시 진행됩니다. 관심 있는 학생은
-      교수 이메일로 연락 주시기 바랍니다.
+    <p class="text-muted max-w-xl text-sm">
+      대학원생·학부 연구생·연수의 모집은 상시 진행됩니다. 관심 있는 학생은 교수
+      이메일로 연락 주시기 바랍니다.
     </p>
     <a
       href="/contact"
-      class="text-sm text-primary underline underline-offset-4 hover:opacity-80"
+      class="text-primary text-sm underline underline-offset-4 hover:opacity-80"
     >
       Contact →
     </a>

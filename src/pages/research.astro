@@ -54,7 +54,7 @@ const researchAreas: ResearchArea[] = [
 <BaseLayout title="Research">
   <h1 class="page-title mb-4">Research</h1>
 
-  <p class="text-muted leading-relaxed max-w-3xl mb-12">
+  <p class="text-muted mb-12 max-w-3xl leading-relaxed">
     {siteConfig.lab.nameKo}은 진단검사의학(Laboratory Medicine)의 임상적 가치를
     한층 끌어올리는 연구를 지향합니다. 수혈의학·진단혈액·분자유전·진단면역
     영역에서 검사 결과가 임상 의사결정으로 어떻게 이어지는지를 정량적으로
@@ -62,25 +62,25 @@ const researchAreas: ResearchArea[] = [
   </p>
 
   <section class="mb-16">
-    <h2 class="text-lg font-semibold text-primary mb-6">Research Areas</h2>
-    <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <h2 class="text-primary mb-6 text-lg font-semibold">Research Areas</h2>
+    <ul class="grid grid-cols-1 gap-6 md:grid-cols-2">
       {
         researchAreas.map((area) => (
-          <li class="border border-default rounded p-6 bg-surface flex flex-col">
+          <li class="border-default bg-surface flex flex-col rounded border p-6">
             <header class="mb-3">
-              <h3 class="text-base font-semibold text-primary leading-snug">
+              <h3 class="text-primary text-base leading-snug font-semibold">
                 {area.title}
               </h3>
               {area.subtitle && (
-                <p class="text-sm text-muted mt-0.5">{area.subtitle}</p>
+                <p class="text-muted mt-0.5 text-sm">{area.subtitle}</p>
               )}
             </header>
-            <p class="text-sm text-primary leading-relaxed flex-1">
+            <p class="text-primary flex-1 text-sm leading-relaxed">
               {area.description}
             </p>
-            <ul class="flex flex-wrap gap-1.5 mt-4">
+            <ul class="mt-4 flex flex-wrap gap-1.5">
               {area.keywords.map((kw) => (
-                <li class="px-2 py-0.5 bg-surface-muted rounded text-xs text-muted">
+                <li class="bg-surface-muted text-muted rounded px-2 py-0.5 text-xs">
                   {kw}
                 </li>
               ))}

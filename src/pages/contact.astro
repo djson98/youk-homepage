@@ -10,25 +10,27 @@ const lab = siteConfig.lab;
 <BaseLayout title="Contact">
   <h1 class="page-title mb-4">Contact</h1>
 
-  <p class="text-muted leading-relaxed max-w-3xl mb-12">
+  <p class="text-muted mb-12 max-w-3xl leading-relaxed">
     공동 연구·협력 문의, 대학원 진학·연구생 지원, 강의 및 자문 요청은 아래
     연락처로 보내 주시기 바랍니다.
   </p>
 
   <section
-    class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-12 mb-16"
+    class="mb-16 grid grid-cols-1 gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]"
   >
     <div>
-      <h2 class="text-lg font-semibold text-primary mb-6">Principal Investigator</h2>
-      <p class="text-base font-semibold text-primary">
+      <h2 class="text-primary mb-6 text-lg font-semibold">
+        Principal Investigator
+      </h2>
+      <p class="text-primary text-base font-semibold">
         {prof.nameKo}
-        <span class="text-sm text-muted ml-2 font-normal">{prof.nameEn}</span>
+        <span class="text-muted ml-2 text-sm font-normal">{prof.nameEn}</span>
       </p>
-      <p class="text-sm text-muted mt-1">{prof.title} · {prof.affiliation}</p>
+      <p class="text-muted mt-1 text-sm">{prof.title} · {prof.affiliation}</p>
 
       <dl class="mt-6 space-y-3 text-sm">
         <div class="flex gap-3">
-          <dt class="w-20 shrink-0 font-medium text-primary">Email</dt>
+          <dt class="text-primary w-20 shrink-0 font-medium">Email</dt>
           <dd>
             <a
               href={`mailto:${prof.email}`}
@@ -41,13 +43,13 @@ const lab = siteConfig.lab;
         {
           prof.homepage && (
             <div class="flex gap-3">
-              <dt class="w-20 shrink-0 font-medium text-primary">Homepage</dt>
+              <dt class="text-primary w-20 shrink-0 font-medium">Homepage</dt>
               <dd>
                 <a
                   href={prof.homepage}
                   target="_blank"
                   rel="noopener"
-                  class="underline underline-offset-2 hover:opacity-80 break-all"
+                  class="break-all underline underline-offset-2 hover:opacity-80"
                 >
                   KNUH 프로필
                 </a>
@@ -58,7 +60,7 @@ const lab = siteConfig.lab;
         {
           prof.orcidId && (
             <div class="flex gap-3">
-              <dt class="w-20 shrink-0 font-medium text-primary">ORCID</dt>
+              <dt class="text-primary w-20 shrink-0 font-medium">ORCID</dt>
               <dd>
                 <a
                   href={`https://orcid.org/${prof.orcidId}`}
@@ -76,17 +78,13 @@ const lab = siteConfig.lab;
     </div>
 
     <div>
-      <h2 class="text-lg font-semibold text-primary mb-6">Lab</h2>
-      <p class="text-base font-semibold text-primary">{lab.nameKo}</p>
-      {
-        lab.tagline && (
-          <p class="text-sm text-muted mt-1">{lab.tagline}</p>
-        )
-      }
+      <h2 class="text-primary mb-6 text-lg font-semibold">Lab</h2>
+      <p class="text-primary text-base font-semibold">{lab.nameKo}</p>
+      {lab.tagline && <p class="text-muted mt-1 text-sm">{lab.tagline}</p>}
 
       <dl class="mt-6 space-y-3 text-sm">
         <div class="flex gap-3">
-          <dt class="w-20 shrink-0 font-medium text-primary">Email</dt>
+          <dt class="text-primary w-20 shrink-0 font-medium">Email</dt>
           <dd>
             <a
               href={`mailto:${c.email}`}
@@ -99,7 +97,7 @@ const lab = siteConfig.lab;
         {
           c.phone && (
             <div class="flex gap-3">
-              <dt class="w-20 shrink-0 font-medium text-primary">Tel</dt>
+              <dt class="text-primary w-20 shrink-0 font-medium">Tel</dt>
               <dd>{c.phone}</dd>
             </div>
           )
@@ -107,7 +105,7 @@ const lab = siteConfig.lab;
         {
           c.fax && (
             <div class="flex gap-3">
-              <dt class="w-20 shrink-0 font-medium text-primary">Fax</dt>
+              <dt class="text-primary w-20 shrink-0 font-medium">Fax</dt>
               <dd>{c.fax}</dd>
             </div>
           )
@@ -115,7 +113,7 @@ const lab = siteConfig.lab;
         {
           c.labLocation && (
             <div class="flex gap-3">
-              <dt class="w-20 shrink-0 font-medium text-primary">Office</dt>
+              <dt class="text-primary w-20 shrink-0 font-medium">Office</dt>
               <dd>{c.labLocation}</dd>
             </div>
           )
@@ -123,7 +121,7 @@ const lab = siteConfig.lab;
         {
           c.address && (
             <div class="flex gap-3">
-              <dt class="w-20 shrink-0 font-medium text-primary">Address</dt>
+              <dt class="text-primary w-20 shrink-0 font-medium">Address</dt>
               <dd class="leading-relaxed">{c.address}</dd>
             </div>
           )
@@ -133,32 +131,30 @@ const lab = siteConfig.lab;
   </section>
 
   <section class="mb-16">
-    <h2 class="text-lg font-semibold text-primary mb-6">Find Us</h2>
+    <h2 class="text-primary mb-6 text-lg font-semibold">Find Us</h2>
     {
       c.mapEmbedUrl ? (
-        <div class="border border-default rounded overflow-hidden">
+        <div class="border-default overflow-hidden rounded border">
           <iframe
             src={c.mapEmbedUrl}
-            class="w-full h-96 border-0"
+            class="h-96 w-full border-0"
             loading="lazy"
             title="연구실 위치"
           />
         </div>
       ) : (
-        <div
-          class="border border-default rounded bg-surface-muted h-64 flex items-center justify-center"
-        >
-          <p class="text-sm text-muted-subtle">지도 자리 (양식 도착 후 추가)</p>
+        <div class="border-default bg-surface-muted flex h-64 items-center justify-center rounded border">
+          <p class="text-muted-subtle text-sm">지도 자리 (양식 도착 후 추가)</p>
         </div>
       )
     }
   </section>
 
-  <section class="border-t border-default pt-10">
-    <h2 class="text-lg font-semibold text-primary mb-3">Joining the Lab</h2>
-    <p class="text-primary leading-relaxed max-w-3xl">
-      대학원(석·박사) 진학, 의과대학 학생 연구 참여, 임상 전공의·전임의의
-      공동 연구를 환영합니다. 관심 분야와 간단한 자기소개, 이력서를 첨부하여
+  <section class="border-default border-t pt-10">
+    <h2 class="text-primary mb-3 text-lg font-semibold">Joining the Lab</h2>
+    <p class="text-primary max-w-3xl leading-relaxed">
+      대학원(석·박사) 진학, 의과대학 학생 연구 참여, 임상 전공의·전임의의 공동
+      연구를 환영합니다. 관심 분야와 간단한 자기소개, 이력서를 첨부하여
       <a
         href={`mailto:${prof.email}`}
         class="underline underline-offset-2 hover:opacity-80"

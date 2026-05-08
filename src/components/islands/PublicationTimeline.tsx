@@ -32,7 +32,9 @@ type PublicationTimelineProps = {
 };
 
 /** Map collection type values to legend buckets used by the original timeline. */
-function legendBucket(type: Publication['type']): 'Journal' | 'Conference' | 'Poster' {
+function legendBucket(
+  type: Publication['type']
+): 'Journal' | 'Conference' | 'Poster' {
   switch (type) {
     case 'journal-article':
       return 'Journal';
@@ -169,14 +171,14 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
       <div className="relative">
         <div
           ref={scrollRef}
-          className="p-3 sm:p-4 md:p-6 overflow-x-auto -mx-1 sm:mx-0 scroll-smooth"
+          className="-mx-1 overflow-x-auto scroll-smooth p-3 sm:mx-0 sm:p-4 md:p-6"
           style={{ scrollbarGutter: 'stable' }}
         >
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mb-2 text-xs text-muted justify-start">
+          <div className="text-muted mb-2 flex flex-wrap items-center justify-start gap-x-4 gap-y-1 text-xs">
             {Object.entries(TYPE_COLORS).map(([type, { bg, label }]) => (
               <span key={type} className="inline-flex items-center gap-1">
                 <span
-                  className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-sm ${bg} flex-shrink-0`}
+                  className={`h-3.5 w-3.5 rounded-sm sm:h-4 sm:w-4 ${bg} flex-shrink-0`}
                   aria-hidden
                 />
                 <span>{label}</span>
@@ -184,7 +186,7 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
             ))}
           </div>
           <div
-            className="grid gap-x-4 sm:gap-x-6 md:gap-x-8 min-w-max"
+            className="grid min-w-max gap-x-4 sm:gap-x-6 md:gap-x-8"
             style={{
               gridTemplateColumns: `repeat(${yearOrder.length}, minmax(72px, 1fr))`,
               gridTemplateRows: 'auto 1px auto',
@@ -214,7 +216,7 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
                     style={{ minWidth: 0 }}
                   >
                     <motion.div
-                      className="flex flex-col justify-end gap-1.5 h-24 sm:h-28 md:h-32"
+                      className="flex h-24 flex-col justify-end gap-1.5 sm:h-28 md:h-32"
                       layout
                       variants={{
                         hidden: {},
@@ -244,15 +246,15 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
                           const content = (
                             <>
                               <div className="min-w-0" aria-hidden />
-                              <div className="min-h-[1rem] flex items-center justify-center">
+                              <div className="flex min-h-[1rem] items-center justify-center">
                                 <span
-                                  className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-sm flex-shrink-0 ${typeStyle.bg}`}
+                                  className={`h-3.5 w-3.5 flex-shrink-0 rounded-sm sm:h-4 sm:w-4 ${typeStyle.bg}`}
                                   aria-hidden
                                 />
                               </div>
-                              <div className="min-h-[1rem] flex items-center min-w-0 pl-1">
+                              <div className="flex min-h-[1rem] min-w-0 items-center pl-1">
                                 <span
-                                  className="text-xs text-secondary truncate max-w-[56px] sm:max-w-[80px] md:max-w-[120px] leading-4 group-hover:text-accent"
+                                  className="text-secondary group-hover:text-accent max-w-[56px] truncate text-xs leading-4 sm:max-w-[80px] md:max-w-[120px]"
                                   aria-label={`${pub.title} (${pub.journal ?? ''})`}
                                 >
                                   {short}
@@ -262,10 +264,14 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
                           );
                           const cellClass =
                             'grid grid-cols-[1fr_1.5rem_1fr] sm:grid-cols-[1fr_2rem_1fr] grid-rows-1 min-h-0 items-end gap-0 group relative ' +
-                            (pub.pdf || pub.doi || pub.slug ? 'cursor-pointer' : '');
+                            (pub.pdf || pub.doi || pub.slug
+                              ? 'cursor-pointer'
+                              : '');
 
                           const mouseProps = {
-                            onMouseEnter: (e: React.MouseEvent<HTMLElement>) => {
+                            onMouseEnter: (
+                              e: React.MouseEvent<HTMLElement>
+                            ) => {
                               setHoveredEl(e.currentTarget);
                               setHoveredPub(pub);
                             },
@@ -302,7 +308,11 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
                                   {content}
                                 </a>
                               ) : pub.slug ? (
-                                <a href={`/publications/${pub.slug}`} className={cellClass} {...mouseProps}>
+                                <a
+                                  href={`/publications/${pub.slug}`}
+                                  className={cellClass}
+                                  {...mouseProps}
+                                >
                                   {content}
                                 </a>
                               ) : (
@@ -330,7 +340,10 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
                                 exit: {
                                   opacity: 0,
                                   y: 48,
-                                  transition: { duration: 0.55, ease: 'easeOut' },
+                                  transition: {
+                                    duration: 0.55,
+                                    ease: 'easeOut',
+                                  },
                                 },
                               }}
                               initial={skipEntranceAnimation ? false : 'hidden'}
@@ -369,11 +382,15 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
               return (
                 <div key={year} className="flex flex-col items-center pt-1">
                   <span
-                    className="w-px h-3 bg-surface-subtle flex-shrink-0"
+                    className="bg-surface-subtle h-3 w-px flex-shrink-0"
                     aria-hidden
                   />
-                  <span className="text-xs font-medium text-muted mt-1">{year}</span>
-                  <span className="text-[10px] text-muted-subtle">({items.length})</span>
+                  <span className="text-muted mt-1 text-xs font-medium">
+                    {year}
+                  </span>
+                  <span className="text-muted-subtle text-[10px]">
+                    ({items.length})
+                  </span>
                 </div>
               );
             })}
@@ -381,7 +398,7 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
         </div>
         {showScrollHint && (
           <div
-            className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none flex items-center text-muted-subtle/60"
+            className="text-muted-subtle/60 pointer-events-none absolute top-1/2 left-2 flex -translate-y-1/2 items-center"
             aria-hidden
           >
             <span
@@ -393,84 +410,92 @@ const PublicationTimeline: React.FC<PublicationTimelineProps> = ({
           </div>
         )}
       </div>
-      {(typeof document !== 'undefined' && hoveredPub && triggerRect
-        ? createPortal(
-            (() => {
-              const maxW = 560;
-              const minW = 280;
-              const w = Math.min(maxW, Math.max(minW, window.innerWidth - 32));
-              const half = w / 2;
-              const left = Math.max(
-                16,
-                Math.min(
-                  triggerRect.left + triggerRect.width / 2 - half,
-                  window.innerWidth - w - 16
-                )
-              );
-              const top = triggerRect.top - 10;
-              const venue = [hoveredPub.journal?.trim(), String(hoveredPub.year)]
-                .filter(Boolean)
-                .join(' · ');
-              const bucket = legendBucket(hoveredPub.type);
-              const typeStyle = TYPE_COLORS[bucket];
+      {
+        (typeof document !== 'undefined' && hoveredPub && triggerRect
+          ? createPortal(
+              (() => {
+                const maxW = 560;
+                const minW = 280;
+                const w = Math.min(
+                  maxW,
+                  Math.max(minW, window.innerWidth - 32)
+                );
+                const half = w / 2;
+                const left = Math.max(
+                  16,
+                  Math.min(
+                    triggerRect.left + triggerRect.width / 2 - half,
+                    window.innerWidth - w - 16
+                  )
+                );
+                const top = triggerRect.top - 10;
+                const venue = [
+                  hoveredPub.journal?.trim(),
+                  String(hoveredPub.year),
+                ]
+                  .filter(Boolean)
+                  .join(' · ');
+                const bucket = legendBucket(hoveredPub.type);
+                const typeStyle = TYPE_COLORS[bucket];
 
-              return (
-                <div
-                  className="fixed z-[9999] pointer-events-none"
-                  style={{
-                    left,
-                    top,
-                    width: w,
-                    minWidth: minW,
-                    maxWidth: maxW,
-                    transform: 'translateY(-100%)',
-                  }}
-                >
-                  <motion.div
-                    key={hoveredPub.id}
-                    role="tooltip"
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-                    className={[
-                      'whitespace-normal text-left rounded-xl',
-                      'bg-white dark:bg-slate-950',
-                      'border border-slate-200/90 dark:border-slate-700/85',
-                      'shadow-[0_10px_40px_-12px_rgba(15,23,42,0.14)] dark:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.55)]',
-                      'px-4 py-3.5 sm:px-5 sm:py-4',
-                      'max-w-full',
-                    ].join(' ')}
+                return (
+                  <div
+                    className="pointer-events-none fixed z-[9999]"
+                    style={{
+                      left,
+                      top,
+                      width: w,
+                      minWidth: minW,
+                      maxWidth: maxW,
+                      transform: 'translateY(-100%)',
+                    }}
                   >
-                    <div className="flex flex-col gap-3">
-                      {venue ? (
-                        <div className="pb-3 border-b border-slate-200/80 dark:border-slate-700/80">
-                          <div className="flex items-start gap-2.5 min-w-0">
-                            <span
-                              className={`inline-block h-3 w-3 sm:h-3.5 sm:w-3.5 rounded-sm shrink-0 mt-[0.2em] ${typeStyle.bg}`}
-                              aria-hidden
-                            />
-                            <p className="text-[11px] sm:text-xs font-normal leading-snug text-slate-500 dark:text-slate-400 flex-1 min-w-0">
-                              {venue}
-                            </p>
+                    <motion.div
+                      key={hoveredPub.id}
+                      role="tooltip"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                      className={[
+                        'rounded-xl text-left whitespace-normal',
+                        'bg-white dark:bg-slate-950',
+                        'border border-slate-200/90 dark:border-slate-700/85',
+                        'shadow-[0_10px_40px_-12px_rgba(15,23,42,0.14)] dark:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.55)]',
+                        'px-4 py-3.5 sm:px-5 sm:py-4',
+                        'max-w-full',
+                      ].join(' ')}
+                    >
+                      <div className="flex flex-col gap-3">
+                        {venue ? (
+                          <div className="border-b border-slate-200/80 pb-3 dark:border-slate-700/80">
+                            <div className="flex min-w-0 items-start gap-2.5">
+                              <span
+                                className={`mt-[0.2em] inline-block h-3 w-3 shrink-0 rounded-sm sm:h-3.5 sm:w-3.5 ${typeStyle.bg}`}
+                                aria-hidden
+                              />
+                              <p className="min-w-0 flex-1 text-[11px] leading-snug font-normal text-slate-500 sm:text-xs dark:text-slate-400">
+                                {venue}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ) : null}
-                      <p className="text-[15px] sm:text-base font-medium leading-[1.58] tracking-[-0.01em] text-slate-900 dark:text-slate-100 [text-rendering:optimizeLegibility]">
-                        {hoveredPub.title}
-                      </p>
-                      {hoveredPub.authors.length > 0 ? (
-                        <p className="text-[11px] sm:text-xs font-normal leading-relaxed text-slate-600 dark:text-slate-300">
-                          {hoveredPub.authors.join(', ')}
+                        ) : null}
+                        <p className="text-[15px] leading-[1.58] font-medium tracking-[-0.01em] text-slate-900 [text-rendering:optimizeLegibility] sm:text-base dark:text-slate-100">
+                          {hoveredPub.title}
                         </p>
-                      ) : null}
-                    </div>
-                  </motion.div>
-                </div>
-              );
-            })(),
-            document.body
-          )
-        : null) as React.ReactNode}
+                        {hoveredPub.authors.length > 0 ? (
+                          <p className="text-[11px] leading-relaxed font-normal text-slate-600 sm:text-xs dark:text-slate-300">
+                            {hoveredPub.authors.join(', ')}
+                          </p>
+                        ) : null}
+                      </div>
+                    </motion.div>
+                  </div>
+                );
+              })(),
+              document.body
+            )
+          : null) as React.ReactNode
+      }
     </div>
   );
 };

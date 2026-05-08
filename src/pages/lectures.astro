@@ -14,42 +14,42 @@ const sorted = await getLectures();
     ) : (
       <div class="space-y-10">
         {sorted.map((entry) => (
-          <article class="border-b border-default pb-8">
+          <article class="border-default border-b pb-8">
             <header class="mb-4">
-              <p class="text-sm text-muted">{entry.data.semester}</p>
-              <h2 class="text-xl font-semibold text-primary mt-1">
+              <p class="text-muted text-sm">{entry.data.semester}</p>
+              <h2 class="text-primary mt-1 text-xl font-semibold">
                 {entry.data.courseName}
               </h2>
               {entry.data.courseType && (
-                <p class="text-sm text-muted mt-1">{entry.data.courseType}</p>
+                <p class="text-muted mt-1 text-sm">{entry.data.courseType}</p>
               )}
               {entry.data.description && (
                 <p class="mt-3 leading-relaxed whitespace-pre-line">
                   {entry.data.description}
                 </p>
               )}
-              <dl class="mt-3 text-sm text-muted grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
+              <dl class="text-muted mt-3 grid grid-cols-1 gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
                 {entry.data.credits != null && (
                   <div>
-                    <dt class="inline font-medium text-primary">학점:</dt>{' '}
+                    <dt class="text-primary inline font-medium">학점:</dt>{' '}
                     <dd class="inline">{entry.data.credits}</dd>
                   </div>
                 )}
                 {entry.data.schedule && (
                   <div>
-                    <dt class="inline font-medium text-primary">시간:</dt>{' '}
+                    <dt class="text-primary inline font-medium">시간:</dt>{' '}
                     <dd class="inline">{entry.data.schedule}</dd>
                   </div>
                 )}
                 {entry.data.room && (
                   <div>
-                    <dt class="inline font-medium text-primary">강의실:</dt>{' '}
+                    <dt class="text-primary inline font-medium">강의실:</dt>{' '}
                     <dd class="inline">{entry.data.room}</dd>
                   </div>
                 )}
                 {entry.data.syllabus && (
                   <div>
-                    <dt class="inline font-medium text-primary">강의계획서:</dt>{' '}
+                    <dt class="text-primary inline font-medium">강의계획서:</dt>{' '}
                     <dd class="inline">
                       <a
                         href={entry.data.syllabus}

@@ -1,9 +1,9 @@
 ---
-name: "TBD"
-nameKo: "—"
-position: "undergrad"
+name: 'TBD'
+nameKo: '—'
+position: 'undergrad'
 researchFields:
-  - "분자유전"
+  - '분자유전'
 order: 1
 ---
 

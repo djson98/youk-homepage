@@ -1,0 +1,14 @@
+dist/
+node_modules/
+.astro/
+.sanity/
+.git/
+.gstack/
+public/pagefind/
+bun.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+*.ndjson
+.env
+.env.*

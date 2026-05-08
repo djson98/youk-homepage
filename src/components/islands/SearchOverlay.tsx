@@ -57,7 +57,7 @@ export const SearchTrigger: React.FC<SearchTriggerProps> = ({
       className={className}
       aria-label={ariaLabel}
     >
-      <HiOutlineSearch className="w-5 h-5" />
+      <HiOutlineSearch className="h-5 w-5" />
     </button>
   );
 };
@@ -96,7 +96,7 @@ const SearchOverlay: React.FC = () => {
     } catch (err) {
       console.warn('[search] failed to load pagefind', err);
       setError(
-        'Search index is only available on the production build (`bun run build`).',
+        'Search index is only available on the production build (`bun run build`).'
       );
       return null;
     }
@@ -106,7 +106,8 @@ const SearchOverlay: React.FC = () => {
   useEffect(() => {
     const onOpen = () => setOpen(true);
     window.addEventListener(OPEN_EVENT, onOpen as EventListener);
-    return () => window.removeEventListener(OPEN_EVENT, onOpen as EventListener);
+    return () =>
+      window.removeEventListener(OPEN_EVENT, onOpen as EventListener);
   }, []);
 
   useEffect(() => {
@@ -207,7 +208,7 @@ const SearchOverlay: React.FC = () => {
         if (target) window.location.href = target.url;
       }
     },
-    [results, activeIndex],
+    [results, activeIndex]
   );
 
   const hint = useMemo(() => {
@@ -225,7 +226,7 @@ const SearchOverlay: React.FC = () => {
       role="dialog"
       aria-modal="true"
       aria-label="Site search"
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] px-4"
+      className="fixed inset-0 z-[100] flex items-start justify-center px-4 pt-[10vh]"
     >
       <button
         type="button"
@@ -233,9 +234,9 @@ const SearchOverlay: React.FC = () => {
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={() => setOpen(false)}
       />
-      <div className="relative w-full max-w-2xl rounded-xl border border-default bg-surface shadow-2xl overflow-hidden">
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-default">
-          <HiOutlineSearch className="w-5 h-5 text-muted-subtle" aria-hidden />
+      <div className="border-default bg-surface relative w-full max-w-2xl overflow-hidden rounded-xl border shadow-2xl">
+        <div className="border-default flex items-center gap-3 border-b px-4 py-3">
+          <HiOutlineSearch className="text-muted-subtle h-5 w-5" aria-hidden />
           <input
             ref={inputRef}
             type="search"
@@ -243,27 +244,27 @@ const SearchOverlay: React.FC = () => {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={onResultsKey}
             placeholder="Search the site"
-            className="flex-1 bg-transparent text-primary placeholder:text-muted-subtle text-base focus:outline-none"
+            className="text-primary placeholder:text-muted-subtle flex-1 bg-transparent text-base focus:outline-none"
             aria-label="Search query"
             autoComplete="off"
             spellCheck={false}
           />
-          <kbd className="hidden sm:inline-block text-[10px] font-mono px-1.5 py-0.5 rounded border border-default text-muted-subtle">
+          <kbd className="border-default text-muted-subtle hidden rounded border px-1.5 py-0.5 font-mono text-[10px] sm:inline-block">
             ESC
           </kbd>
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="p-1 text-muted hover:text-primary"
+            className="text-muted hover:text-primary p-1"
             aria-label="Close"
           >
-            <HiX className="w-5 h-5" />
+            <HiX className="h-5 w-5" />
           </button>
         </div>
 
         <div className="max-h-[60vh] overflow-y-auto">
           {results.length > 0 ? (
-            <ul role="listbox" className="divide-y divide-border-muted">
+            <ul role="listbox" className="divide-border-muted divide-y">
               {results.map((r, idx) => (
                 <li key={r.id}>
                   <a
@@ -277,14 +278,14 @@ const SearchOverlay: React.FC = () => {
                     }`}
                     onMouseEnter={() => setActiveIndex(idx)}
                   >
-                    <div className="text-sm font-medium text-primary leading-snug">
+                    <div className="text-primary text-sm leading-snug font-medium">
                       {r.title}
                     </div>
                     <div
-                      className="mt-1 text-xs text-muted leading-relaxed line-clamp-2 [&_mark]:bg-yellow-200 [&_mark]:dark:bg-yellow-500/30 [&_mark]:text-primary [&_mark]:rounded-sm [&_mark]:px-0.5"
+                      className="text-muted [&_mark]:text-primary mt-1 line-clamp-2 text-xs leading-relaxed [&_mark]:rounded-sm [&_mark]:bg-yellow-200 [&_mark]:px-0.5 [&_mark]:dark:bg-yellow-500/30"
                       dangerouslySetInnerHTML={{ __html: r.excerpt }}
                     />
-                    <div className="mt-1 text-[11px] text-muted-subtle truncate">
+                    <div className="text-muted-subtle mt-1 truncate text-[11px]">
                       {r.url}
                     </div>
                   </a>
@@ -292,27 +293,35 @@ const SearchOverlay: React.FC = () => {
               ))}
             </ul>
           ) : (
-            <div className="px-4 py-8 text-sm text-muted text-center">
+            <div className="text-muted px-4 py-8 text-center text-sm">
               {hint}
             </div>
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-3 px-4 py-2 border-t border-default text-[11px] text-muted-subtle">
+        <div className="border-default text-muted-subtle flex items-center justify-between gap-3 border-t px-4 py-2 text-[11px]">
           <div className="flex items-center gap-3">
             <span>
-              <kbd className="font-mono px-1 py-0.5 rounded border border-default">↑↓</kbd>{' '}
+              <kbd className="border-default rounded border px-1 py-0.5 font-mono">
+                ↑↓
+              </kbd>{' '}
               navigate
             </span>
             <span>
-              <kbd className="font-mono px-1 py-0.5 rounded border border-default">↵</kbd>{' '}
+              <kbd className="border-default rounded border px-1 py-0.5 font-mono">
+                ↵
+              </kbd>{' '}
               open
             </span>
           </div>
           <div>
-            <kbd className="font-mono px-1 py-0.5 rounded border border-default">/</kbd>{' '}
+            <kbd className="border-default rounded border px-1 py-0.5 font-mono">
+              /
+            </kbd>{' '}
             or{' '}
-            <kbd className="font-mono px-1 py-0.5 rounded border border-default">⌘K</kbd>{' '}
+            <kbd className="border-default rounded border px-1 py-0.5 font-mono">
+              ⌘K
+            </kbd>{' '}
             to open
           </div>
         </div>

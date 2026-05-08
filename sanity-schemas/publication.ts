@@ -16,7 +16,8 @@ export const publication = defineType({
     defineField({
       name: 'authors',
       title: '저자',
-      description: '저자 한 명씩 추가. 1저자/교신저자 표기는 이름 뒤에 (1st), (corr.) 식으로.',
+      description:
+        '저자 한 명씩 추가. 1저자/교신저자 표기는 이름 뒤에 (1st), (corr.) 식으로.',
       type: 'array',
       of: [{ type: 'string' }],
       validation: (r) => r.required().min(1),

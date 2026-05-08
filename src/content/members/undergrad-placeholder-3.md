@@ -1,9 +1,9 @@
 ---
-name: "TBD"
-nameKo: "—"
-position: "undergrad"
+name: 'TBD'
+nameKo: '—'
+position: 'undergrad'
 researchFields:
-  - "암진단"
+  - '암진단'
 order: 3
 ---
 

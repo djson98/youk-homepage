@@ -70,28 +70,28 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   professor: {
-    nameKo: "육희정",
-    nameEn: "Hee-Jeong Youk",
-    title: "조교수",
-    affiliation: "강원대학교 의과대학 진단검사의학과",
-    email: "hjyouk@kangwon.ac.kr",
-    photo: "/images/professor.jpg",
-    orcidId: "0000-0003-3528-7729",
+    nameKo: '육희정',
+    nameEn: 'Hee-Jeong Youk',
+    title: '조교수',
+    affiliation: '강원대학교 의과대학 진단검사의학과',
+    email: 'hjyouk@kangwon.ac.kr',
+    photo: '/images/professor.jpg',
+    orcidId: '0000-0003-3528-7729',
     // googleScholar: undefined — 양식 도착 후 추가
-    homepage: "https://m.knuh.or.kr/medical/doc_info.asp?part_dep=25",
-    bio: "강원대학교 의과대학 진단검사의학과 조교수. 진단혈액, 수혈의학, 분자유전 분야의 진단검사를 전문으로 하며, 알러지질환·암진단·감염진단 영역의 검사실 진단을 담당합니다.",
+    homepage: 'https://m.knuh.or.kr/medical/doc_info.asp?part_dep=25',
+    bio: '강원대학교 의과대학 진단검사의학과 조교수. 진단혈액, 수혈의학, 분자유전 분야의 진단검사를 전문으로 하며, 알러지질환·암진단·감염진단 영역의 검사실 진단을 담당합니다.',
   },
   lab: {
-    nameKo: "biomed Lab",
-    nameEn: "biomed Lab",
+    nameKo: 'biomed Lab',
+    nameEn: 'biomed Lab',
     // TODO: 한글명 별도 결정 시 nameKo 교체 (예: "의과학 연구실")
-    tagline: "연구실 한 줄 소개를 적어주세요",
-    keywords: ["진단혈액", "수혈의학", "분자유전", "진단면역", "암진단"],
+    tagline: '연구실 한 줄 소개를 적어주세요',
+    keywords: ['진단혈액', '수혈의학', '분자유전', '진단면역', '암진단'],
     // photo: undefined — 양식 도착 후 추가
   },
   theme: {
     // HAI lab 기본값 유지. 추후 색상 톤 조정 예정.
-    primaryColor: "#005b99",
+    primaryColor: '#005b99',
     // secondaryColor: undefined,
     // fontFamily: undefined,
   },
@@ -108,8 +108,8 @@ export const siteConfig: SiteConfig = {
     contact: true,
   },
   contact: {
-    email: "hjyouk@kangwon.ac.kr",
-    phone: "033-258-2157",
+    email: 'hjyouk@kangwon.ac.kr',
+    phone: '033-258-2157',
     // TODO: 양식 도착 후 채우기 — 연구실 위치/주소/팩스/지도
     // labLocation: undefined,
     // address: undefined,
@@ -118,16 +118,16 @@ export const siteConfig: SiteConfig = {
   },
   nav: {
     items: [
-      { href: "/research", labelKo: "연구", labelEn: "Research" },
-      { href: "/members", labelKo: "구성원", labelEn: "Members" },
-      { href: "/publications", labelKo: "논문", labelEn: "Publications" },
-      { href: "/gallery", labelKo: "갤러리", labelEn: "Gallery" },
-      { href: "/contact", labelKo: "연락처", labelEn: "Contacts" },
+      { href: '/research', labelKo: '연구', labelEn: 'Research' },
+      { href: '/members', labelKo: '구성원', labelEn: 'Members' },
+      { href: '/publications', labelKo: '논문', labelEn: 'Publications' },
+      { href: '/gallery', labelKo: '갤러리', labelEn: 'Gallery' },
+      { href: '/contact', labelKo: '연락처', labelEn: 'Contacts' },
     ],
   },
   meta: {
     // TODO: 도메인 결정 후 실제 URL로 교체
-    siteUrl: "https://youk-lab.example.com",
+    siteUrl: 'https://youk-lab.example.com',
     // ogImage: undefined,
     // googleAnalytics: undefined,
   },

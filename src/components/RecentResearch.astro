@@ -17,30 +17,30 @@ const highlights: Highlight[] = [
 
 <section class="space-y-6">
   <header class="flex items-baseline justify-between">
-    <h2 class="text-lg font-semibold text-primary">Recent Research</h2>
-    <a href="/research" class="text-sm text-muted hover:underline">
+    <h2 class="text-primary text-lg font-semibold">Recent Research</h2>
+    <a href="/research" class="text-muted text-sm hover:underline">
       모두 보기 →
     </a>
   </header>
 
-  <ul class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+  <ul class="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
     {
       highlights.map((h) => (
         <li>
           <a
             href={h.link ?? '/research'}
-            class="block aspect-[4/3] bg-surface-muted border border-default rounded overflow-hidden hover:opacity-90 transition-opacity"
+            class="bg-surface-muted border-default block aspect-[4/3] overflow-hidden rounded border transition-opacity hover:opacity-90"
             aria-label={h.title}
           >
             {h.image ? (
               <img
                 src={h.image}
                 alt={h.title ?? ''}
-                class="w-full h-full object-cover"
+                class="h-full w-full object-cover"
               />
             ) : (
-              <div class="w-full h-full flex items-center justify-center">
-                <span class="text-xs text-muted-subtle">이미지 자리</span>
+              <div class="flex h-full w-full items-center justify-center">
+                <span class="text-muted-subtle text-xs">이미지 자리</span>
               </div>
             )}
           </a>

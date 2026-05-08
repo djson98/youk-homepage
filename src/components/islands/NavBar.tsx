@@ -75,46 +75,48 @@ const NavBar: React.FC<NavBarProps> = ({
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-page/95 backdrop-blur-sm border-b border-default/50 transition-all duration-300"
+      className="dark:bg-page/95 border-default/50 fixed top-0 right-0 left-0 z-50 border-b bg-white/95 backdrop-blur-sm transition-all duration-300"
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="absolute top-0 left-0 right-0 h-0.5 bg-transparent">
+      <div className="absolute top-0 right-0 left-0 h-0.5 bg-transparent">
         <div
-          className="h-full bg-accent transition-[width] duration-100 ease-out"
+          className="bg-accent h-full transition-[width] duration-100 ease-out"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
-      <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-4 md:px-12 py-3 md:py-5">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-3 md:px-12 md:py-5">
         <a
           href={brandHref}
-          className="flex items-center mr-6 md:mr-12 focus:outline-none rounded"
+          className="mr-6 flex items-center rounded focus:outline-none md:mr-12"
         >
           {brandLogo && (
             <img
               src={brandLogo}
               alt={`${brandName} Logo`}
-              className="h-6 md:h-8 w-auto mr-2"
+              className="mr-2 h-6 w-auto md:h-8"
             />
           )}
-          <span className="text-sm md:text-base font-light text-primary hover:text-accent transition-colors duration-300 whitespace-nowrap overflow-hidden">
+          <span className="text-primary hover:text-accent overflow-hidden text-sm font-light whitespace-nowrap transition-colors duration-300 md:text-base">
             {brandName}
           </span>
         </a>
 
         {/* Desktop menu (xl+) */}
-        <div className="hidden xl:flex items-center space-x-4" role="menubar">
+        <div className="hidden items-center space-x-4 xl:flex" role="menubar">
           {items.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className={`px-6 py-3 rounded-lg text-lg font-light focus:outline-none transition-colors duration-300 ${
+              className={`rounded-lg px-6 py-3 text-lg font-light transition-colors duration-300 focus:outline-none ${
                 resolvedActiveHref === item.href
                   ? 'text-accent'
                   : 'text-muted hover:text-accent'
               }`}
               role="menuitem"
-              aria-current={resolvedActiveHref === item.href ? 'page' : undefined}
+              aria-current={
+                resolvedActiveHref === item.href ? 'page' : undefined
+              }
             >
               {item.label}
             </a>
@@ -122,58 +124,58 @@ const NavBar: React.FC<NavBarProps> = ({
           <button
             type="button"
             onClick={openSearch}
-            className="p-2.5 rounded-lg text-muted hover:text-primary hover:bg-surface-subtle transition-colors duration-200"
+            className="text-muted hover:text-primary hover:bg-surface-subtle rounded-lg p-2.5 transition-colors duration-200"
             aria-label="Open site search (press / or ⌘K)"
             title="Search (/ or ⌘K)"
           >
-            <HiOutlineSearch className="w-5 h-5" />
+            <HiOutlineSearch className="h-5 w-5" />
           </button>
           <button
             type="button"
             onClick={toggleDark}
-            className="p-2.5 rounded-lg text-muted hover:text-primary hover:bg-surface-subtle transition-colors duration-200"
+            className="text-muted hover:text-primary hover:bg-surface-subtle rounded-lg p-2.5 transition-colors duration-200"
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {isDark ? (
-              <HiOutlineSun className="w-5 h-5" />
+              <HiOutlineSun className="h-5 w-5" />
             ) : (
-              <HiOutlineMoon className="w-5 h-5" />
+              <HiOutlineMoon className="h-5 w-5" />
             )}
           </button>
         </div>
 
         {/* Mobile / tablet (< xl): search + theme toggle + hamburger */}
-        <div className="flex xl:hidden items-center gap-1">
+        <div className="flex items-center gap-1 xl:hidden">
           <button
             type="button"
             onClick={openSearch}
-            className="p-2 rounded-lg text-muted hover:text-primary hover:bg-surface-subtle transition-colors duration-200"
+            className="text-muted hover:text-primary hover:bg-surface-subtle rounded-lg p-2 transition-colors duration-200"
             aria-label="Open site search"
           >
-            <HiOutlineSearch className="w-6 h-6" />
+            <HiOutlineSearch className="h-6 w-6" />
           </button>
           <button
             type="button"
             onClick={toggleDark}
-            className="p-2 rounded-lg text-muted hover:text-primary hover:bg-surface-subtle transition-colors duration-200"
+            className="text-muted hover:text-primary hover:bg-surface-subtle rounded-lg p-2 transition-colors duration-200"
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {isDark ? (
-              <HiOutlineSun className="w-6 h-6" />
+              <HiOutlineSun className="h-6 w-6" />
             ) : (
-              <HiOutlineMoon className="w-6 h-6" />
+              <HiOutlineMoon className="h-6 w-6" />
             )}
           </button>
           <button
-            className="p-2 rounded-lg text-muted hover:bg-surface-subtle hover:text-primary transition-colors duration-200"
+            className="text-muted hover:bg-surface-subtle hover:text-primary rounded-lg p-2 transition-colors duration-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? (
-              <HiX className="w-6 h-6" />
+              <HiX className="h-6 w-6" />
             ) : (
-              <HiMenu className="w-6 h-6" />
+              <HiMenu className="h-6 w-6" />
             )}
           </button>
         </div>
@@ -181,23 +183,25 @@ const NavBar: React.FC<NavBarProps> = ({
 
       {/* Mobile / tablet expanding menu */}
       <div
-        className={`xl:hidden bg-white/95 dark:bg-page/95 backdrop-blur-sm overflow-hidden transition-all duration-300 ease-in-out ${
+        className={`dark:bg-page/95 overflow-hidden bg-white/95 backdrop-blur-sm transition-all duration-300 ease-in-out xl:hidden ${
           isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="px-4 md:px-6 py-3 md:py-4 space-y-1 md:space-y-2">
+        <div className="space-y-1 px-4 py-3 md:space-y-2 md:px-6 md:py-4">
           {items.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className={`block px-3 md:px-4 py-2 md:py-3 rounded-lg text-base font-light transition-colors duration-300 ${
+              className={`block rounded-lg px-3 py-2 text-base font-light transition-colors duration-300 md:px-4 md:py-3 ${
                 resolvedActiveHref === item.href
                   ? 'text-accent bg-accent-muted'
                   : 'text-muted hover:text-accent'
               }`}
               onClick={() => setIsMenuOpen(false)}
               role="menuitem"
-              aria-current={resolvedActiveHref === item.href ? 'page' : undefined}
+              aria-current={
+                resolvedActiveHref === item.href ? 'page' : undefined
+              }
             >
               {item.label}
             </a>

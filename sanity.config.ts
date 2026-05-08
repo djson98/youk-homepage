@@ -25,8 +25,12 @@ const structure: StructureResolver = (S) =>
             .id('research-list')
             .title('연구')
             .items([
-              S.documentTypeListItem('publication').title('논문').icon(DocumentTextIcon),
-              S.documentTypeListItem('project').title('프로젝트').icon(RocketIcon),
+              S.documentTypeListItem('publication')
+                .title('논문')
+                .icon(DocumentTextIcon),
+              S.documentTypeListItem('project')
+                .title('프로젝트')
+                .icon(RocketIcon),
             ])
         ),
       S.listItem()
@@ -52,7 +56,9 @@ const structure: StructureResolver = (S) =>
             .title('활동')
             .items([
               S.documentTypeListItem('news').title('소식').icon(BellIcon),
-              S.documentTypeListItem('gallery').title('갤러리').icon(ImagesIcon),
+              S.documentTypeListItem('gallery')
+                .title('갤러리')
+                .icon(ImagesIcon),
               S.documentTypeListItem('lecture').title('강의').icon(BookIcon),
             ])
         ),

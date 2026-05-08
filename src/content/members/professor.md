@@ -1,17 +1,17 @@
 ---
-name: "Hee-Jeong Youk"
-nameKo: "육희정"
-position: "professor"
-email: "hjyouk@kangwon.ac.kr"
+name: 'Hee-Jeong Youk'
+nameKo: '육희정'
+position: 'professor'
+email: 'hjyouk@kangwon.ac.kr'
 researchFields:
-  - "진단혈액"
-  - "수혈의학"
-  - "분자유전"
-  - "진단면역"
-  - "암진단"
-photo: "/images/professor.jpg"
-homepage: "https://m.knuh.or.kr/medical/doc_info.asp?part_dep=25"
-bio: "강원대학교 의과대학 진단검사의학과 조교수. 진단혈액·수혈의학·분자유전 분야의 진단검사를 전문으로 합니다."
+  - '진단혈액'
+  - '수혈의학'
+  - '분자유전'
+  - '진단면역'
+  - '암진단'
+photo: '/images/professor.jpg'
+homepage: 'https://m.knuh.or.kr/medical/doc_info.asp?part_dep=25'
+bio: '강원대학교 의과대학 진단검사의학과 조교수. 진단혈액·수혈의학·분자유전 분야의 진단검사를 전문으로 합니다.'
 order: 0
 ---
 

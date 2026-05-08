@@ -20,14 +20,14 @@ const StickyIndex: React.FC<StickyIndexProps> = ({
 }) => {
   return (
     <div
-      className="hidden lg:block w-36 ml-4 flex-shrink-0"
+      className="ml-4 hidden w-36 flex-shrink-0 lg:block"
       style={{ position: 'relative' }}
     >
       <div
         className="sticky-index sticky z-30"
         style={{ position: 'sticky', top }}
       >
-        <Card className="bg-surface/90 backdrop-blur-sm border-0 shadow-none">
+        <Card className="bg-surface/90 border-0 shadow-none backdrop-blur-sm">
           <CardHeader className="pb-2">
             <CardTitle>Index</CardTitle>
           </CardHeader>
@@ -38,7 +38,7 @@ const StickyIndex: React.FC<StickyIndexProps> = ({
                   key={item.id}
                   href={`#${item.id}`}
                   className={cn(
-                    'block text-xs py-1 px-2 rounded transition-colors duration-200 whitespace-nowrap font-light',
+                    'block rounded px-2 py-1 text-xs font-light whitespace-nowrap transition-colors duration-200',
                     activeId === item.id
                       ? 'text-accent'
                       : 'text-muted hover:text-accent'
