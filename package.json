@@ -5,29 +5,38 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "fetch-orcid": "bun run scripts/fetch-orcid.ts",
     "prebuild": "bun run fetch-orcid",
-    "astro": "astro"
+    "astro": "astro",
+    "studio:dev": "sanity dev",
+    "studio:build": "sanity build",
+    "studio:deploy": "sanity deploy"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/mdx": "^4",
     "@astrojs/react": "^4",
     "@astrojs/sitemap": "^3",
+    "@sanity/client": "^7.22.0",
+    "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^5",
     "framer-motion": "^12.38.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-icons": "^5.6.0",
+    "styled-components": "^6.4.1",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
+    "@sanity/astro": "^3.4.0",
+    "@sanity/vision": "^5.24.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "pagefind": "^1.5.2",
     "typescript": "^6.0.3"
   }
 }

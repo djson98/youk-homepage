@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getPublications } from '../lib/sanity';
 
 interface Props {
   limit?: number;
@@ -8,10 +8,8 @@ interface Props {
 
 const { limit = 5, href = '/publications' } = Astro.props;
 
-const all = await getCollection('publications');
-const recent = [...all]
-  .sort((a, b) => b.data.year - a.data.year)
-  .slice(0, limit);
+const all = await getPublications();
+const recent = all.slice(0, limit);
 ---
 
 <section class="space-y-4">

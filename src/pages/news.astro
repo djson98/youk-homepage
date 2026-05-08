@@ -1,11 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getNews } from '../lib/sanity';
 
-const all = await getCollection('news');
-const sorted = [...all].sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
-);
+const sorted = await getNews();
 
 const dateFmt = new Intl.DateTimeFormat('ko-KR', {
   year: 'numeric',

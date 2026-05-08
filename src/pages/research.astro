@@ -1,8 +1,97 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import RecentPublications from '../components/RecentPublications.astro';
+import { siteConfig } from '../config/site.config';
+
+// TODO: 양식 도착 후 실제 연구 분야로 교체
+// 현재는 진단검사의학(육희정 교수 전공) 분야 정합 placeholder.
+interface ResearchArea {
+  title: string;
+  subtitle?: string;
+  description: string;
+  keywords: string[];
+}
+
+const researchAreas: ResearchArea[] = [
+  {
+    title: 'Transfusion Medicine & Blood Bank Science',
+    subtitle: '수혈의학 / 혈액은행',
+    description:
+      '적혈구 항원·항체 동정, 부적합 수혈 반응 사례 분석, 혈액제제 안전성·적정 사용 평가를 다룹니다. 임상 현장의 의사결정과 직결되는 검사 프로토콜 개선을 목표로 합니다.',
+    keywords: ['Antibody identification', 'Hemovigilance', 'Blood utilization'],
+  },
+  {
+    title: 'Diagnostic Hematology',
+    subtitle: '진단혈액학',
+    description:
+      '말초혈액·골수 형태학, 유세포분석, 응고 검사 결과의 통합 해석을 통해 혈액질환의 진단 정확도와 보고 표준화를 연구합니다. 자동화 장비 검증과 디지털 형태학을 포함합니다.',
+    keywords: ['Flow cytometry', 'Coagulation', 'Bone marrow morphology'],
+  },
+  {
+    title: 'Molecular Diagnostics',
+    subtitle: '분자유전 진단',
+    description:
+      '혈액종양·감염질환·유전성 질환을 대상으로 NGS, 디지털 PCR, 융합 유전자 검출 등의 분자검사 워크플로우를 평가합니다. 임상 적용 가능한 변이 해석과 보고 체계를 다룹니다.',
+    keywords: ['NGS', 'Hereditary disease panels', 'Variant interpretation'],
+  },
+  {
+    title: 'Diagnostic Immunology & Allergy',
+    subtitle: '진단면역 / 알러지',
+    description:
+      '자가면역질환의 자가항체 패턴, 알러지 특이 IgE 다중검사, 사이토카인 프로파일을 활용한 임상 표현형 분류와 검사 알고리즘 최적화를 연구합니다.',
+    keywords: ['Autoantibody profiling', 'Specific IgE', 'Cytokines'],
+  },
+  {
+    title: 'Laboratory Quality & Diagnostic Stewardship',
+    subtitle: '검사실 질 관리 / 검사 적정성',
+    description:
+      '내부·외부 정도관리 데이터, 결과 보고 일관성, 임상의-검사실 커뮤니케이션을 통해 불필요한 검사 감소와 의사결정 지원 체계를 설계합니다.',
+    keywords: ['QC/QA', 'Reflex testing', 'Lab utilization'],
+  },
+];
 ---
 
 <BaseLayout title="Research">
-  <h1 class="page-title mb-8">Research</h1>
-  <p class="text-muted">준비 중입니다.</p>
+  <h1 class="page-title mb-4">Research</h1>
+
+  <p class="text-muted leading-relaxed max-w-3xl mb-12">
+    {siteConfig.lab.nameKo}은 진단검사의학(Laboratory Medicine)의 임상적 가치를
+    한층 끌어올리는 연구를 지향합니다. 수혈의학·진단혈액·분자유전·진단면역
+    영역에서 검사 결과가 임상 의사결정으로 어떻게 이어지는지를 정량적으로
+    탐구하고, 새로운 진단 워크플로우의 임상 적용성과 안전성을 평가합니다.
+  </p>
+
+  <section class="mb-16">
+    <h2 class="text-lg font-semibold text-primary mb-6">Research Areas</h2>
+    <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {
+        researchAreas.map((area) => (
+          <li class="border border-default rounded p-6 bg-surface flex flex-col">
+            <header class="mb-3">
+              <h3 class="text-base font-semibold text-primary leading-snug">
+                {area.title}
+              </h3>
+              {area.subtitle && (
+                <p class="text-sm text-muted mt-0.5">{area.subtitle}</p>
+              )}
+            </header>
+            <p class="text-sm text-primary leading-relaxed flex-1">
+              {area.description}
+            </p>
+            <ul class="flex flex-wrap gap-1.5 mt-4">
+              {area.keywords.map((kw) => (
+                <li class="px-2 py-0.5 bg-surface-muted rounded text-xs text-muted">
+                  {kw}
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mb-4">
+    <RecentPublications limit={5} />
+  </section>
 </BaseLayout>

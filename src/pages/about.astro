@@ -1,8 +1,136 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config/site.config';
+
+const lab = siteConfig.lab;
+const prof = siteConfig.professor;
+
+// TODO: 양식 도착 후 미션·비전·연혁 실제 내용으로 교체.
+const mission =
+  '진단검사의학의 임상적 가치를 정량적으로 입증하고, 새로운 검사 워크플로우가 실제 환자의 의사결정을 어떻게 바꾸는지를 검증합니다. 검사실과 임상 사이의 간격을 좁히는 연구를 지향합니다.';
+
+const vision =
+  '강원지역 의료 현장의 데이터를 기반으로, 수혈의학·진단혈액·분자유전·진단면역 영역에서 표준화된 보고 체계와 의사결정 지원을 제시하는 연구실로 성장합니다.';
+
+interface Pillar {
+  title: string;
+  description: string;
+}
+
+const pillars: Pillar[] = [
+  {
+    title: '임상 적합성',
+    description:
+      '모든 연구 질문은 실제 진단 현장의 의사결정 문제에서 출발합니다.',
+  },
+  {
+    title: '재현 가능성',
+    description:
+      '검사 프로토콜과 분석 코드를 문서화하여 외부 기관에서도 검증 가능하도록 합니다.',
+  },
+  {
+    title: '협업 중심',
+    description:
+      '혈액내과·종양내과·알러지내과 등 임상 부서, 그리고 학내·외 연구실과의 다학제 협업을 우선합니다.',
+  },
+  {
+    title: '교육 통합',
+    description:
+      '의대생·전공의·연구원이 함께 진단검사의학의 사고 과정을 익힐 수 있는 환경을 제공합니다.',
+  },
+];
+
+interface MilestoneItem {
+  year: string;
+  text: string;
+}
+
+// TODO: 양식 도착 후 실제 연혁으로 교체.
+const milestones: MilestoneItem[] = [
+  { year: '2024', text: '강원대학교 의과대학 진단검사의학과 부임' },
+  { year: '2024', text: 'biomed Lab 연구실 개설' },
+  { year: '2025', text: '수혈의학·분자유전 연구 프로젝트 본격 가동' },
+];
 ---
 
-<BaseLayout title="소개">
-  <h1 class="text-2xl font-bold mb-4">소개</h1>
-  <p>준비 중입니다.</p>
+<BaseLayout title="About">
+  <h1 class="page-title mb-4">About</h1>
+
+  <p class="text-muted leading-relaxed max-w-3xl mb-16">
+    {lab.nameKo}은 {prof.affiliation}에 소속된 연구실입니다. 진단검사의학을
+    축으로 임상 현장에서 발생하는 진단 문제를 다학제 협업으로 풀어갑니다.
+  </p>
+
+  <section class="mb-16 grid grid-cols-1 md:grid-cols-2 gap-10">
+    <div>
+      <h2 class="text-lg font-semibold text-primary mb-3">Mission</h2>
+      <p class="text-primary leading-relaxed">{mission}</p>
+    </div>
+    <div>
+      <h2 class="text-lg font-semibold text-primary mb-3">Vision</h2>
+      <p class="text-primary leading-relaxed">{vision}</p>
+    </div>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-lg font-semibold text-primary mb-6">Research Keywords</h2>
+    <ul class="flex flex-wrap gap-2">
+      {
+        lab.keywords.map((kw) => (
+          <li class="px-3 py-1 border border-default rounded-full text-sm text-primary bg-surface">
+            {kw}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-lg font-semibold text-primary mb-6">Guiding Principles</h2>
+    <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {
+        pillars.map((p) => (
+          <li class="border border-default rounded p-5 bg-surface">
+            <h3 class="text-base font-semibold text-primary">{p.title}</h3>
+            <p class="text-sm text-primary leading-relaxed mt-2">
+              {p.description}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mb-16">
+    <h2 class="text-lg font-semibold text-primary mb-6">Milestones</h2>
+    <ul class="space-y-4 border-l border-default pl-6 max-w-2xl">
+      {
+        milestones.map((m) => (
+          <li class="relative">
+            <span
+              class="absolute -left-[1.6rem] top-1.5 w-2 h-2 rounded-full bg-primary"
+              aria-hidden="true"
+            />
+            <p class="text-sm text-muted">{m.year}</p>
+            <p class="text-primary leading-relaxed">{m.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section
+    class="border-t border-default pt-10 flex flex-col sm:flex-row gap-4 sm:items-baseline sm:justify-between"
+  >
+    <p class="text-muted text-sm max-w-xl">
+      대학원생·학부 연구생·연수의 모집은 상시 진행됩니다. 관심 있는 학생은
+      교수 이메일로 연락 주시기 바랍니다.
+    </p>
+    <a
+      href="/contact"
+      class="text-sm text-primary underline underline-offset-4 hover:opacity-80"
+    >
+      Contact →
+    </a>
+  </section>
 </BaseLayout>

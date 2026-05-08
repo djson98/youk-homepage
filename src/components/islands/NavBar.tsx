@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { HiMenu, HiX, HiOutlineMoon, HiOutlineSun } from 'react-icons/hi';
+import {
+  HiMenu,
+  HiX,
+  HiOutlineMoon,
+  HiOutlineSun,
+  HiOutlineSearch,
+} from 'react-icons/hi';
 
 export interface NavItem {
   href: string;
@@ -63,6 +69,10 @@ const NavBar: React.FC<NavBarProps> = ({
     }
   };
 
+  const openSearch = () => {
+    window.dispatchEvent(new CustomEvent('youk:search:open'));
+  };
+
   return (
     <nav
       className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-page/95 backdrop-blur-sm border-b border-default/50 transition-all duration-300"
@@ -111,6 +121,15 @@ const NavBar: React.FC<NavBarProps> = ({
           ))}
           <button
             type="button"
+            onClick={openSearch}
+            className="p-2.5 rounded-lg text-muted hover:text-primary hover:bg-surface-subtle transition-colors duration-200"
+            aria-label="Open site search (press / or ⌘K)"
+            title="Search (/ or ⌘K)"
+          >
+            <HiOutlineSearch className="w-5 h-5" />
+          </button>
+          <button
+            type="button"
             onClick={toggleDark}
             className="p-2.5 rounded-lg text-muted hover:text-primary hover:bg-surface-subtle transition-colors duration-200"
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -123,8 +142,16 @@ const NavBar: React.FC<NavBarProps> = ({
           </button>
         </div>
 
-        {/* Mobile / tablet (< xl): theme toggle + hamburger */}
+        {/* Mobile / tablet (< xl): search + theme toggle + hamburger */}
         <div className="flex xl:hidden items-center gap-1">
+          <button
+            type="button"
+            onClick={openSearch}
+            className="p-2 rounded-lg text-muted hover:text-primary hover:bg-surface-subtle transition-colors duration-200"
+            aria-label="Open site search"
+          >
+            <HiOutlineSearch className="w-6 h-6" />
+          </button>
           <button
             type="button"
             onClick={toggleDark}

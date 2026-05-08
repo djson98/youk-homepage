@@ -82,9 +82,9 @@ export const siteConfig: SiteConfig = {
     bio: "강원대학교 의과대학 진단검사의학과 조교수. 진단혈액, 수혈의학, 분자유전 분야의 진단검사를 전문으로 하며, 알러지질환·암진단·감염진단 영역의 검사실 진단을 담당합니다.",
   },
   lab: {
-    // TODO: 양식 도착 후 실제 랩 이름·태그라인으로 교체
-    nameKo: "연구실 이름",
-    nameEn: "Lab Name",
+    nameKo: "biomed Lab",
+    nameEn: "biomed Lab",
+    // TODO: 한글명 별도 결정 시 nameKo 교체 (예: "의과학 연구실")
     tagline: "연구실 한 줄 소개를 적어주세요",
     keywords: ["진단혈액", "수혈의학", "분자유전", "진단면역", "암진단"],
     // photo: undefined — 양식 도착 후 추가

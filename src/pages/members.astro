@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection, render } from 'astro:content';
+import { getMembers } from '../lib/sanity';
 
 const POSITION_LABEL: Record<string, string> = {
   professor: '교수',
@@ -20,7 +20,7 @@ const POSITION_ORDER: Record<string, number> = {
   alumni: 5,
 };
 
-const all = await getCollection('members');
+const all = await getMembers();
 const sorted = [...all].sort((a, b) => {
   const oa = POSITION_ORDER[a.data.position] ?? 99;
   const ob = POSITION_ORDER[b.data.position] ?? 99;
@@ -36,16 +36,13 @@ for (const m of sorted) {
 }
 
 const professorEntry = sorted.find((m) => m.data.position === 'professor');
-const ProfessorContent = professorEntry
-  ? (await render(professorEntry)).Content
-  : null;
 ---
 
 <BaseLayout title="구성원">
   <h1 class="page-title mb-8">구성원</h1>
 
   {
-    professorEntry && ProfessorContent && (
+    professorEntry && (
       <section class="mb-12">
         <h2 class="text-lg font-semibold text-primary mb-4">교수</h2>
         <div class="flex flex-col sm:flex-row gap-6 items-start">
@@ -101,9 +98,11 @@ const ProfessorContent = professorEntry
                 </div>
               )}
             </dl>
-            <div class="prose prose-sm max-w-none mt-4">
-              <ProfessorContent />
-            </div>
+            {professorEntry.data.bio && (
+              <div class="prose prose-sm max-w-none mt-4 whitespace-pre-line text-primary">
+                {professorEntry.data.bio}
+              </div>
+            )}
           </div>
         </div>
       </section>

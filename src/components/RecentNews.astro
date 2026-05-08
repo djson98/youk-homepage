@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getNews } from '../lib/sanity';
 
 interface Props {
   limit?: number;
@@ -8,10 +8,8 @@ interface Props {
 
 const { limit = 4, href = '/news' } = Astro.props;
 
-const all = await getCollection('news');
-const recent = [...all]
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, limit);
+const all = await getNews();
+const recent = all.slice(0, limit);
 
 const dateFmt = new Intl.DateTimeFormat('ko-KR', {
   year: 'numeric',

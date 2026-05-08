@@ -2,6 +2,7 @@
 import { siteConfig } from '../config/site.config';
 import Seo from '../components/Seo.astro';
 import NavBar from '../components/islands/NavBar.tsx';
+import SearchOverlay from '../components/islands/SearchOverlay.tsx';
 import '../styles/global.css';
 
 export interface Props {
@@ -73,6 +74,7 @@ const hasHero = Astro.slots.has('hero');
       items={navItems}
       activePath={activePath}
     />
+    <SearchOverlay client:idle />
 
     <slot name="hero" />
 

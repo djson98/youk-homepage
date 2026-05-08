@@ -1,29 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection, render } from 'astro:content';
+import { getLectures } from '../lib/sanity';
 
-const lectures = await getCollection('lectures');
-const sorted = [...lectures].sort((a, b) =>
-  b.data.semester.localeCompare(a.data.semester)
-);
-
-const rendered = await Promise.all(
-  sorted.map(async (entry) => ({
-    entry,
-    Content: (await render(entry)).Content,
-  }))
-);
+const sorted = await getLectures();
 ---
 
 <BaseLayout title="강의">
   <h1 class="page-title mb-6">강의</h1>
 
   {
-    rendered.length === 0 ? (
+    sorted.length === 0 ? (
       <p class="text-muted">준비 중입니다.</p>
     ) : (
       <div class="space-y-10">
-        {rendered.map(({ entry, Content }) => (
+        {sorted.map((entry) => (
           <article class="border-b border-default pb-8">
             <header class="mb-4">
               <p class="text-sm text-muted">{entry.data.semester}</p>
@@ -34,7 +24,9 @@ const rendered = await Promise.all(
                 <p class="text-sm text-muted mt-1">{entry.data.courseType}</p>
               )}
               {entry.data.description && (
-                <p class="mt-3 leading-relaxed">{entry.data.description}</p>
+                <p class="mt-3 leading-relaxed whitespace-pre-line">
+                  {entry.data.description}
+                </p>
               )}
               <dl class="mt-3 text-sm text-muted grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
                 {entry.data.credits != null && (
@@ -72,9 +64,6 @@ const rendered = await Promise.all(
                 )}
               </dl>
             </header>
-            <div class="prose prose-sm max-w-none">
-              <Content />
-            </div>
           </article>
         ))}
       </div>

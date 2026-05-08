@@ -1,8 +1,204 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getProjects } from '../lib/sanity';
+
+const all = await getProjects();
+
+const real = all.filter((p) => !p.data.title.includes('준비 중'));
+
+const now = new Date();
+const ongoing = real
+  .filter((p) => !p.data.endDate || p.data.endDate >= now)
+  .sort((a, b) => b.data.startDate.getTime() - a.data.startDate.getTime());
+const finished = real
+  .filter((p) => p.data.endDate && p.data.endDate < now)
+  .sort((a, b) => b.data.endDate!.getTime() - a.data.endDate!.getTime());
+
+const dateFmt = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: 'short',
+});
+
+function formatRange(
+  start: Date,
+  end?: Date
+): string {
+  const s = dateFmt.format(start);
+  const e = end ? dateFmt.format(end) : '진행 중';
+  return `${s} – ${e}`;
+}
+
+// TODO: 양식 도착 후 콘텐츠 컬렉션으로 교체. 현재는 분야 정합 placeholder.
+interface DummyProject {
+  title: string;
+  range: string;
+  description: string;
+  tags: string[];
+}
+
+const dummyOngoing: DummyProject[] = [
+  {
+    title: '비예측 항체 동정 알고리즘 임상 적용 평가',
+    range: '2025. 03 – 진행 중',
+    description:
+      '수혈 전 검사에서 검출된 비예측 동종항체에 대해, 자동화 항체 동정 패널과 수기 패널의 일치도와 임상 보고 시간을 비교 분석합니다.',
+    tags: ['수혈의학', '항체 동정'],
+  },
+  {
+    title: '혈액종양 NGS 패널 임상 검증',
+    range: '2024. 09 – 진행 중',
+    description:
+      '골수성 종양 표적 NGS 패널의 분석적 성능과 보고 표준을 평가하고, 다학제 분자종양보드와 연계한 변이 해석 워크플로우를 구축합니다.',
+    tags: ['분자유전', 'NGS'],
+  },
+  {
+    title: '응급 검사 TAT 단축을 위한 검사실 워크플로우 재설계',
+    range: '2025. 01 – 진행 중',
+    description:
+      'CBC·응고·생화학 응급 검체의 사전분석·분석·보고 단계별 시간을 정량화하고, 자동화 트랙 도입 전후의 임상 영향을 평가합니다.',
+    tags: ['검사실 운영', 'QC'],
+  },
+];
+
+const dummyFinished: DummyProject[] = [
+  {
+    title: '특이 IgE 다중검사 패널의 알러지 표현형 분류 연구',
+    range: '2023. 03 – 2024. 12',
+    description:
+      '호흡기·식품 알러지 환자군을 대상으로 다중 특이 IgE 결과 패턴과 임상 표현형의 연관성을 분석하였습니다.',
+    tags: ['진단면역', '알러지'],
+  },
+];
+
+const hasReal = real.length > 0;
 ---
 
-<BaseLayout title="프로젝트">
-  <h1 class="text-2xl font-bold mb-4">프로젝트</h1>
-  <p>준비 중입니다.</p>
+<BaseLayout title="Projects">
+  <h1 class="page-title mb-4">Projects</h1>
+
+  <p class="text-muted leading-relaxed max-w-3xl mb-12">
+    임상 진단검사의학 현장의 문제를 출발점으로, 실험·관찰 연구와 검사실
+    운영 개선을 함께 진행합니다. 아래는 현재 진행 중이거나 최근 종료된 주요
+    프로젝트 목록입니다.
+  </p>
+
+  <section class="mb-16">
+    <header class="flex items-baseline justify-between mb-6">
+      <h2 class="text-lg font-semibold text-primary">Ongoing</h2>
+      <span class="text-sm text-muted">진행 중인 프로젝트</span>
+    </header>
+
+    {
+      hasReal ? (
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {ongoing.map((p) => (
+            <li class="border border-default rounded overflow-hidden bg-surface flex flex-col">
+              <div class="aspect-[4/3] bg-surface-muted flex items-center justify-center">
+                {p.data.images && p.data.images[0] ? (
+                  <img
+                    src={p.data.images[0]}
+                    alt={p.data.title}
+                    class="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span class="text-xs text-muted-subtle">이미지 자리</span>
+                )}
+              </div>
+              <div class="p-5 flex flex-col flex-1">
+                <h3 class="text-base font-semibold text-primary leading-snug">
+                  {p.data.title}
+                </h3>
+                <p class="text-xs text-muted mt-1">
+                  {formatRange(p.data.startDate, p.data.endDate)}
+                </p>
+                <p class="text-sm text-primary leading-relaxed mt-3 flex-1">
+                  {p.data.description}
+                </p>
+                {p.data.tags && p.data.tags.length > 0 && (
+                  <ul class="flex flex-wrap gap-1.5 mt-4">
+                    {p.data.tags.map((t) => (
+                      <li class="px-2 py-0.5 bg-surface-muted rounded text-xs text-muted">
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {dummyOngoing.map((p) => (
+            <li class="border border-default rounded overflow-hidden bg-surface flex flex-col">
+              <div class="aspect-[4/3] bg-surface-muted flex items-center justify-center">
+                <span class="text-xs text-muted-subtle">이미지 자리</span>
+              </div>
+              <div class="p-5 flex flex-col flex-1">
+                <h3 class="text-base font-semibold text-primary leading-snug">
+                  {p.title}
+                </h3>
+                <p class="text-xs text-muted mt-1">{p.range}</p>
+                <p class="text-sm text-primary leading-relaxed mt-3 flex-1">
+                  {p.description}
+                </p>
+                <ul class="flex flex-wrap gap-1.5 mt-4">
+                  {p.tags.map((t) => (
+                    <li class="px-2 py-0.5 bg-surface-muted rounded text-xs text-muted">
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+
+  <section>
+    <header class="flex items-baseline justify-between mb-6">
+      <h2 class="text-lg font-semibold text-primary">Past</h2>
+      <span class="text-sm text-muted">종료된 프로젝트</span>
+    </header>
+
+    {
+      hasReal ? (
+        finished.length === 0 ? (
+          <p class="text-muted text-sm">종료된 프로젝트가 아직 없습니다.</p>
+        ) : (
+          <ul class="space-y-5">
+            {finished.map((p) => (
+              <li class="border-b border-default pb-5">
+                <h3 class="text-base font-semibold text-primary leading-snug">
+                  {p.data.title}
+                </h3>
+                <p class="text-xs text-muted mt-1">
+                  {formatRange(p.data.startDate, p.data.endDate)}
+                </p>
+                <p class="text-sm text-primary leading-relaxed mt-2 max-w-3xl">
+                  {p.data.description}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )
+      ) : (
+        <ul class="space-y-5">
+          {dummyFinished.map((p) => (
+            <li class="border-b border-default pb-5">
+              <h3 class="text-base font-semibold text-primary leading-snug">
+                {p.title}
+              </h3>
+              <p class="text-xs text-muted mt-1">{p.range}</p>
+              <p class="text-sm text-primary leading-relaxed mt-2 max-w-3xl">
+                {p.description}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
 </BaseLayout>

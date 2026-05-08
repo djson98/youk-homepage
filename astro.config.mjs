@@ -11,5 +11,12 @@ export default defineConfig({
   integrations: [mdx(), sitemap(), react()],
   vite: {
     plugins: [tailwindcss()],
+    build: {
+      // Pagefind drops its bundle into /pagefind/ AFTER `astro build`.
+      // Treat the runtime import as external so Rollup doesn't try to resolve it.
+      rollupOptions: {
+        external: [/^\/pagefind\//],
+      },
+    },
   },
 });

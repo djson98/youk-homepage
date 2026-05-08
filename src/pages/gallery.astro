@@ -1,20 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getGallery } from '../lib/sanity';
 
-const albums = await getCollection('gallery');
-const sorted = [...albums].sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
-);
+const sorted = await getGallery();
 
 const dateFmt = new Intl.DateTimeFormat('ko-KR', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
-
-const normalize = (img: string | { src: string; caption?: string }) =>
-  typeof img === 'string' ? { src: img, caption: undefined } : img;
 
 const PLACEHOLDER_HEIGHTS = [
   'h-72', 'h-96', 'h-80', 'h-[28rem]', 'h-64', 'h-[32rem]',
@@ -57,24 +51,21 @@ const PLACEHOLDER_HEIGHTS = [
               )}
             </header>
             <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-              {album.data.images.map((raw) => {
-                const img = normalize(raw);
-                return (
-                  <figure class="break-inside-avoid">
-                    <img
-                      src={img.src}
-                      alt={img.caption ?? album.data.title}
-                      class="w-full h-auto rounded border border-default"
-                      loading="lazy"
-                    />
-                    {img.caption && (
-                      <figcaption class="text-xs text-muted mt-1">
-                        {img.caption}
-                      </figcaption>
-                    )}
-                  </figure>
-                );
-              })}
+              {album.data.images.map((img) => (
+                <figure class="break-inside-avoid">
+                  <img
+                    src={img.src}
+                    alt={img.caption ?? album.data.title}
+                    class="w-full h-auto rounded border border-default"
+                    loading="lazy"
+                  />
+                  {img.caption && (
+                    <figcaption class="text-xs text-muted mt-1">
+                      {img.caption}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
             </div>
           </section>
         ))}
