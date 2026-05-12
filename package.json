@@ -8,6 +8,7 @@
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "fetch-orcid": "bun run scripts/fetch-orcid.ts",
+    "sync-orcid": "bun run scripts/fetch-orcid.ts && bun run scripts/import-publications-to-sanity.ts && bun run scripts/upload-ndjson-to-sanity.ts",
     "prebuild": "bun run fetch-orcid",
     "astro": "astro",
     "studio:dev": "sanity dev",

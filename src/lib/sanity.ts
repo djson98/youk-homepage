@@ -143,7 +143,9 @@ const memberRawSchema = z.object({
 
 export const memberSchema = memberRawSchema
   .omit({ photo: true })
-  .extend({ photo: z.url().optional() });
+  // photo는 Sanity가 만든 CDN URL이거나, Studio에서 박아넣은 로컬 경로(/images/...)
+  // 둘 다 받을 수 있게 일반 string으로 둔다.
+  .extend({ photo: z.string().optional() });
 
 export type MemberData = Omit<z.infer<typeof memberSchema>, '_id'>;
 
@@ -160,15 +162,21 @@ export async function getMembers(): Promise<Entry<MemberData>[]> {
   const rawRows = parseRows('member', memberRawSchema, cleaned);
   const transformed = rawRows.map((row) => {
     const { photo, ...rest } = row;
+    // photo가 Sanity asset(객체)이면 urlFor로 변환,
+    // 이미 URL/경로 문자열이면 그대로 사용 (Studio에서 잘못 박아넣은 경우 대비).
+    let photoUrl: string | undefined;
+    if (typeof photo === 'string') {
+      photoUrl = photo;
+    } else if (photo && typeof photo === 'object') {
+      photoUrl = urlFor(photo as SanityImageSource)
+        .width(400)
+        .height(400)
+        .fit('crop')
+        .url();
+    }
     return {
       ...rest,
-      photo: photo
-        ? urlFor(photo as SanityImageSource)
-            .width(400)
-            .height(400)
-            .fit('crop')
-            .url()
-        : undefined,
+      photo: photoUrl,
     };
   });
   // 변환 후 최종 형태도 한 번 더 검증해서 URL 변환이 깨지지 않았는지 확인
