@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://biomed.kangwon.ac.kr/sitemap-index.xml
