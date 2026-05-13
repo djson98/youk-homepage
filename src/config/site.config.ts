@@ -126,8 +126,7 @@ export const siteConfig: SiteConfig = {
     ],
   },
   meta: {
-    // TODO: 도메인 결정 후 실제 URL로 교체
-    siteUrl: 'https://youk-lab.example.com',
+    siteUrl: 'https://biomed.kangwon.ac.kr',
     // ogImage: undefined,
     // googleAnalytics: undefined,
   },
