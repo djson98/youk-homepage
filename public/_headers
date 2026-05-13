@@ -1,0 +1,20 @@
+# Cloudflare Pages 응답 헤더 설정.
+# 학교 보안 스캐너(biomed.kangwon.ac.kr 배포 전 검사) 대응 + 일반적 baseline 강화.
+#
+# 참고:
+#   - CSP는 인라인 script/style을 허용한다. Astro 정적 빌드가 theme-flicker 방지용
+#     인라인 <script>와 island 부트 스크립트를 박기 때문. hash/nonce를 쓰면 더 깐깐하지만
+#     빌드마다 값이 바뀌어 관리 비용이 크므로 'unsafe-inline'으로 절충.
+#   - connect-src에 *.sanity.io를 허용한다 (CMS).
+#   - HSTS는 includeSubDomains 빼고 max-age만. kangwon.ac.kr 서브도메인이 다 HTTPS라는
+#     보장이 없으므로 안전 옵션. preload는 절대 금지.
+#   - X-Frame-Options DENY는 CSP frame-ancestors 'none'과 중복이지만 호환성 + 스캐너 만족용.
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.sanity.io; font-src 'self' data:; connect-src 'self' https://*.sanity.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Strict-Transport-Security: max-age=31536000
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=()
+  Access-Control-Allow-Origin: https://biomed.kangwon.ac.kr
