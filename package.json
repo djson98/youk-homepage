@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist",
+    "build": "astro build && bun run scripts/generate-security-headers.ts && pagefind --site dist",
     "preview": "astro preview",
     "fetch-orcid": "bun run scripts/fetch-orcid.ts",
     "sync-orcid": "bun run scripts/fetch-orcid.ts && bun run scripts/import-publications-to-sanity.ts && bun run scripts/upload-ndjson-to-sanity.ts",
