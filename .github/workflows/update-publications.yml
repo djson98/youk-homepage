@@ -1,0 +1,68 @@
+name: Update publications
+
+# 논문 목록을 ORCID + PubMed에서 매일 가져와 Sanity에 반영하고,
+# 변경분을 커밋해 사이트를 다시 빌드시킨다.
+#
+# 순서가 중요하다: 사이트는 빌드 시점에 Sanity를 읽어 정적 페이지를 굽는다.
+#   1) fetch  — ORCID + PubMed → src/content/publications/*.md
+#   2) Sanity — md → NDJSON → Sanity 업로드 (사라진 논문 문서도 정리)
+#   3) commit — md 변경분 push → Cloudflare Pages가 리빌드하며 새 Sanity 데이터 반영
+# 2번 없이 3번만 하면 빌드가 옛 Sanity 데이터를 읽어 아무것도 바뀌지 않는다.
+#
+# 필요한 secret: SANITY_WRITE_TOKEN (editor 이상). project id는 공개값이라 아래에 직접 둔다.
+
+on:
+  schedule:
+    # 매일 03:00 KST (18:00 UTC). GitHub cron은 UTC 기준.
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# 예약 실행과 수동 실행이 겹쳐 같은 브랜치에 동시에 push하지 않도록.
+concurrency:
+  group: update-publications
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      - name: Fetch publications (ORCID + PubMed)
+        run: bun run fetch-publications
+
+      # 생성된 md를 저장소 포맷 규칙에 맞춰 둔다.
+      # 이걸 빼면 format:check가 깨지고 매일 같은 자리에 diff가 남는다.
+      - name: Format generated markdown
+        run: bunx prettier --write src/content/publications
+
+      - name: Sync to Sanity
+        env:
+          PUBLIC_SANITY_PROJECT_ID: wd7ygz18
+          PUBLIC_SANITY_DATASET: production
+          SANITY_WRITE_TOKEN: ${{ secrets.SANITY_WRITE_TOKEN }}
+        run: |
+          bun run scripts/import-publications-to-sanity.ts
+          bun run scripts/upload-ndjson-to-sanity.ts
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/content/publications
+          if git diff --staged --quiet; then
+            echo 'No publication changes.'
+          else
+            git commit -m 'chore(publications): sync from ORCID + PubMed'
+            git push
+            echo 'Pushed publication updates — Cloudflare Pages will rebuild.'
+          fi

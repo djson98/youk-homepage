@@ -2,7 +2,7 @@
 title: 'A New Trial to Measure ABO Antibodies Using Complement-Dependent Cytotoxicity'
 authors:
   - 'Hee-Jeong Youk'
-  - 'Ho-yoon Ryu'
+  - 'Ho-Yoon Ryu'
   - 'Suk Won Seo'
   - 'Jin Seok Kim'
   - 'Yousun Chung'
