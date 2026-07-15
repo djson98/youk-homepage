@@ -8,6 +8,11 @@
  * 멱등: 같은 _id 도큐먼트는 createOrReplace로 갱신, 신규는 생성.
  * 호출: bun run scripts/upload-ndjson-to-sanity.ts [path/to/file.ndjson]
  *       (path 생략 시 ./publications.ndjson)
+ *
+ * 고아 문서 정리: _id가 `publication.`으로 시작하는데 이번 NDJSON에 없는 문서는
+ * 삭제한다. 논문 제목이 바뀌어 슬러그(=_id)가 달라지거나 소스에서 논문이 빠지면
+ * 옛 문서가 남아 사이트에 중복으로 뜨기 때문. 이 접두사는 자동 생성 문서의
+ * 네임스페이스라, Studio에서 직접 만든 문서(랜덤 _id)는 건드리지 않는다.
  */
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -38,15 +43,37 @@ if (docs.length === 0) {
   process.exit(0);
 }
 
-const mutations = docs.map((d) => ({ createOrReplace: d }));
+const base = `https://${projectId}.api.sanity.io/v2024-01-01/data`;
+const authHeaders = { Authorization: `Bearer ${token}` };
 
-const url = `https://${projectId}.api.sanity.io/v2024-01-01/data/mutate/${dataset}`;
-const res = await fetch(url, {
+// 자동 생성된 기존 문서를 먼저 조회해 이번 업로드에 없는 것을 골라낸다.
+const groq =
+  '*[_type == "publication" && string::startsWith(_id, "publication.")]._id';
+const queryRes = await fetch(
+  `${base}/query/${dataset}?query=${encodeURIComponent(groq)}`,
+  {
+    headers: authHeaders,
+  }
+);
+if (!queryRes.ok) {
+  console.error(`Sanity query failed: HTTP ${queryRes.status}`);
+  console.error((await queryRes.text()).slice(0, 1000));
+  process.exit(1);
+}
+const existingIds =
+  ((await queryRes.json()) as { result: string[] }).result ?? [];
+
+const incomingIds = new Set(docs.map((d) => d._id));
+const orphanIds = existingIds.filter((id) => !incomingIds.has(id));
+
+const mutations = [
+  ...docs.map((d) => ({ createOrReplace: d })),
+  ...orphanIds.map((id) => ({ delete: { id } })),
+];
+
+const res = await fetch(`${base}/mutate/${dataset}`, {
   method: 'POST',
-  headers: {
-    Authorization: `Bearer ${token}`,
-    'Content-Type': 'application/json',
-  },
+  headers: { ...authHeaders, 'Content-Type': 'application/json' },
   body: JSON.stringify({ mutations }),
 });
 
@@ -66,6 +93,10 @@ const counts = body.results.reduce<Record<string, number>>((acc, r) => {
   return acc;
 }, {});
 console.log(
-  `uploaded ${docs.length} documents (transaction ${body.transactionId})`
+  `uploaded ${docs.length} documents` +
+    (orphanIds.length > 0
+      ? `, deleted ${orphanIds.length} orphaned (${orphanIds.join(', ')})`
+      : '') +
+    ` (transaction ${body.transactionId})`
 );
 console.log('operations:', counts);

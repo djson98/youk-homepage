@@ -4,9 +4,12 @@
  */
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { parse as parseYaml } from 'yaml';
 
-const ROOT = new URL('..', import.meta.url).pathname;
+// fileURLToPath, not URL.pathname: on Windows the latter yields "/C:/..."
+// which join() then turns into an unusable "\C:\...".
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const PUB_DIR = join(ROOT, 'src/content/publications');
 const OUT = join(ROOT, 'publications.ndjson');
 
@@ -22,7 +25,9 @@ type Frontmatter = {
 };
 
 function extractFrontmatter(raw: string): Frontmatter | null {
-  const match = raw.match(/^---\n([\s\S]*?)\n---/);
+  // \r?\n: git checks these files out with CRLF on Windows (core.autocrlf),
+  // and an LF-only pattern silently matches nothing there.
+  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return null;
   return parseYaml(match[1]) as Frontmatter;
 }

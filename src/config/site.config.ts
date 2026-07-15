@@ -21,7 +21,14 @@ export interface SiteConfig {
     affiliation: string; // 예: "강원대학교 의과대학 진단검사의학과"
     email: string;
     photo?: string; // /images/professor.jpg
-    orcidId?: string; // 빌드타임 publications 페치
+    orcidId?: string; // publications 자동 수집 (ORCID)
+    /**
+     * publications 자동 수집 (PubMed). Europe PMC 쿼리 문법.
+     * 예: 'AUTH:"Youk HJ"' — 비워두면 PubMed 수집을 건너뛴다.
+     */
+    pubmedQuery?: string;
+    /** 동명이인 논문이 섞여 들어올 때 제외할 PMID 목록. */
+    pubmedExcludePmids?: string[];
     googleScholar?: string;
     homepage?: string;
     bio?: string;
@@ -77,6 +84,10 @@ export const siteConfig: SiteConfig = {
     email: 'hjyouk@kangwon.ac.kr',
     photo: '/images/professor.jpg',
     orcidId: '0000-0003-3528-7729',
+    // ORCID에 없는 논문이 PubMed에는 있어서 두 소스를 합쳐 수집한다.
+    // 2005~2006년 연구소 시절 논문까지 모두 본인 논문으로 확인됨.
+    pubmedQuery: 'AUTH:"Youk HJ"',
+    pubmedExcludePmids: [],
     // googleScholar: undefined — 양식 도착 후 추가
     homepage: 'https://m.knuh.or.kr/medical/doc_info.asp?part_dep=25',
     bio: '강원대학교 의과대학 진단검사의학과 조교수. 진단혈액, 수혈의학, 분자유전 분야의 진단검사를 전문으로 하며, 알러지질환·암진단·감염진단 영역의 검사실 진단을 담당합니다.',
