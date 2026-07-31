@@ -170,6 +170,12 @@ const professorEntry = sorted.find((m) => m.data.position === 'professor');
                       '—'
                     )}
                   </p>
+                  {/* 스튜디오 '소개'란에 연구 분야를 적는 경우가 많아 카드에도 노출한다. */}
+                  {m.data.bio && (
+                    <p class="text-muted pt-1 text-xs leading-relaxed whitespace-pre-line">
+                      {m.data.bio}
+                    </p>
+                  )}
                 </div>
               </li>
             ))}
