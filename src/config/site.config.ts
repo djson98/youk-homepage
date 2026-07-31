@@ -39,6 +39,7 @@ export interface SiteConfig {
     tagline?: string;
     keywords: string[]; // 3-5개 연구 키워드
     photo?: string;
+    github?: string; // 연구실 GitHub 조직/계정
   };
   theme: {
     primaryColor: string; // hex
@@ -96,8 +97,13 @@ export const siteConfig: SiteConfig = {
     nameKo: 'biomed Lab',
     nameEn: 'biomed Lab',
     // TODO: 한글명 별도 결정 시 nameKo 교체 (예: "의과학 연구실")
-    tagline: '연구실 한 줄 소개를 적어주세요',
+    // 히어로에 그대로 노출되는 폴백 문구.
+    // Sanity 스튜디오 '홈 화면 (히어로) → 부제'를 채우면 그 값이 우선한다.
+    tagline:
+      '진단혈액·수혈의학·분자유전을 중심으로, 검사실에서 답을 찾는 강원대학교 의과대학 진단검사의학 연구실입니다.\n' +
+      '진단검사 자동화와 로봇·AI 기반 검체 관리 연구를 함께 수행합니다.',
     keywords: ['진단혈액', '수혈의학', '분자유전', '진단면역', '암진단'],
+    github: 'https://github.com/BiomedKNU',
     // photo: undefined — 양식 도착 후 추가
   },
   theme: {

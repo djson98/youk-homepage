@@ -149,6 +149,55 @@ h6 {
   overflow: hidden;
 }
 
+/* 마크다운 본문(구성원 소개의 학력·전문 분야 등)용 최소 타이포그래피.
+   @tailwindcss/typography를 쓰지 않으므로 필요한 태그만 직접 다듬는다. */
+.md-prose {
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+.md-prose h2 {
+  color: var(--color-primary);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.md-prose h2:first-child {
+  margin-top: 0;
+}
+.md-prose h3 {
+  color: var(--color-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.375rem;
+}
+.md-prose p {
+  margin-bottom: 0.75rem;
+}
+.md-prose ul {
+  list-style: disc;
+  padding-left: 1.125rem;
+  margin-bottom: 0.75rem;
+}
+.md-prose ol {
+  list-style: decimal;
+  padding-left: 1.125rem;
+  margin-bottom: 0.75rem;
+}
+.md-prose li {
+  margin-bottom: 0.25rem;
+}
+.md-prose a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.md-prose > :last-child {
+  margin-bottom: 0;
+}
+
 .sticky-index {
   will-change: transform;
   transform: translateZ(0);

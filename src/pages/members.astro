@@ -1,6 +1,8 @@
 ---
+import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getMembers } from '../lib/sanity';
+import { siteConfig } from '../config/site.config';
 
 const POSITION_LABEL: Record<string, string> = {
   professor: '교수',
@@ -35,7 +37,18 @@ for (const m of sorted) {
   groups.get(key)!.push(m);
 }
 
-const professorEntry = sorted.find((m) => m.data.position === 'professor');
+// 교수 카드는 Sanity를 우선하고, Sanity에 교수 문서가 없으면
+// src/content/members/professor.md로 폴백한다. 지금 Sanity에는 교수 문서가
+// 없어서 교수 섹션(관심 분야 포함)이 통째로 빠져 있었다.
+const professorFromSanity = sorted.find((m) => m.data.position === 'professor');
+const professorMd = (await getCollection('members')).find(
+  (e) => e.data.position === 'professor'
+);
+const professorEntry = professorFromSanity ?? professorMd;
+
+// 학력·전문 분야 같은 상세 소개는 professor.md 본문에 있다.
+// 본문을 렌더할 때는 frontmatter의 bio(같은 내용의 요약)를 중복 노출하지 않는다.
+const ProfessorBody = professorMd ? (await render(professorMd)).Content : null;
 ---
 
 <BaseLayout title="구성원">
@@ -43,67 +56,86 @@ const professorEntry = sorted.find((m) => m.data.position === 'professor');
 
   {
     professorEntry && (
-      <section class="mb-12">
-        <h2 class="text-primary mb-4 text-lg font-semibold">교수</h2>
-        <div class="flex flex-col items-start gap-6 sm:flex-row">
-          {professorEntry.data.photo && (
-            <img
-              src={professorEntry.data.photo}
-              alt={professorEntry.data.nameKo ?? professorEntry.data.name}
-              class="border-default h-52 w-40 flex-shrink-0 rounded border object-cover"
-            />
-          )}
-          <div class="min-w-0 flex-1">
-            <p class="text-primary text-xl font-semibold">
-              {professorEntry.data.nameKo ?? professorEntry.data.name}
-              {professorEntry.data.nameKo && (
-                <span class="text-muted ml-2 text-base font-normal">
-                  {professorEntry.data.name}
-                </span>
-              )}
-            </p>
-            {professorEntry.data.researchFields &&
-              professorEntry.data.researchFields.length > 0 && (
-                <p class="text-muted mt-1 text-sm">
-                  {professorEntry.data.researchFields.join(' · ')}
-                </p>
-              )}
-            <dl class="mt-3 space-y-1 text-sm">
-              {professorEntry.data.email && (
-                <div>
-                  <dt class="text-primary inline font-medium">이메일:</dt>{' '}
-                  <dd class="inline">
-                    <a
-                      href={`mailto:${professorEntry.data.email}`}
-                      class="underline"
-                    >
-                      {professorEntry.data.email}
-                    </a>
-                  </dd>
-                </div>
-              )}
-              {professorEntry.data.homepage && (
-                <div>
-                  <dt class="text-primary inline font-medium">홈페이지:</dt>{' '}
-                  <dd class="inline">
-                    <a
-                      href={professorEntry.data.homepage}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="underline"
-                    >
-                      KNUH 프로필
-                    </a>
-                  </dd>
-                </div>
-              )}
-            </dl>
-            {professorEntry.data.bio && (
-              <div class="prose prose-sm text-primary mt-4 max-w-none whitespace-pre-line">
-                {professorEntry.data.bio}
-              </div>
+      <section class="mb-14">
+        <h2 class="text-muted mb-4 text-xs font-semibold tracking-widest uppercase">
+          {POSITION_LABEL.professor}
+        </h2>
+
+        <div class="border-default bg-surface rounded-xl border p-5 md:p-7">
+          <div class="flex flex-col gap-6 sm:flex-row sm:gap-8">
+            {professorEntry.data.photo && (
+              <img
+                src={professorEntry.data.photo}
+                alt={professorEntry.data.nameKo ?? professorEntry.data.name}
+                class="border-default h-56 w-44 flex-shrink-0 self-start rounded-lg border object-cover"
+              />
             )}
+
+            <div class="min-w-0 flex-1">
+              <p class="text-primary font-display text-2xl leading-tight font-semibold">
+                {professorEntry.data.nameKo ?? professorEntry.data.name}
+              </p>
+              <p class="text-muted mt-1 text-sm">
+                {professorEntry.data.nameKo && (
+                  <span>{professorEntry.data.name} · </span>
+                )}
+                {siteConfig.professor.title} ·{' '}
+                {siteConfig.professor.affiliation}
+              </p>
+
+              {professorEntry.data.researchFields &&
+                professorEntry.data.researchFields.length > 0 && (
+                  <ul class="mt-4 flex flex-wrap gap-1.5">
+                    {professorEntry.data.researchFields.map((f) => (
+                      <li class="btn-badge">{f}</li>
+                    ))}
+                  </ul>
+                )}
+
+              <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+                {professorEntry.data.email && (
+                  <a
+                    href={`mailto:${professorEntry.data.email}`}
+                    class="text-muted hover:text-primary underline decoration-1 underline-offset-2"
+                  >
+                    {professorEntry.data.email}
+                  </a>
+                )}
+                {professorEntry.data.homepage && (
+                  <a
+                    href={professorEntry.data.homepage}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-muted hover:text-primary underline decoration-1 underline-offset-2"
+                  >
+                    KNUH 프로필 ↗
+                  </a>
+                )}
+                {siteConfig.lab.github && (
+                  <a
+                    href={siteConfig.lab.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-muted hover:text-primary underline decoration-1 underline-offset-2"
+                  >
+                    GitHub ↗
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
+
+          {ProfessorBody ? (
+            <div class="md-prose border-default mt-6 border-t pt-6">
+              <ProfessorBody />
+            </div>
+          ) : (
+            professorEntry.data.bio && (
+              <p class="text-muted border-default mt-6 border-t pt-6 text-sm leading-relaxed whitespace-pre-line">
+                {professorEntry.data.bio}
+              </p>
+            )
+          )}
         </div>
       </section>
     )
@@ -113,70 +145,90 @@ const professorEntry = sorted.find((m) => m.data.position === 'professor');
     Array.from(groups.entries())
       .filter(([pos]) => pos !== 'professor')
       .map(([pos, members]) => (
-        <section class="mb-10">
-          <h2 class="text-primary mb-4 text-lg font-semibold">
+        <section class="mb-12">
+          <h2 class="text-muted mb-4 text-xs font-semibold tracking-widest uppercase">
             {POSITION_LABEL[pos] ?? pos}
           </h2>
           <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {members.map((m) => (
-              <li class="border-default flex gap-3 rounded border p-4">
-                {m.data.photo ? (
-                  <img
-                    src={m.data.photo}
-                    alt={m.data.nameKo ?? m.data.name}
-                    class="h-20 w-16 flex-shrink-0 rounded object-cover"
-                  />
-                ) : (
-                  <div
-                    class="bg-surface-muted h-20 w-16 flex-shrink-0 rounded"
-                    aria-hidden="true"
-                  />
-                )}
-                <div class="min-w-0 flex-1 space-y-1">
-                  <p class="text-primary truncate font-medium">
-                    {m.data.nameKo ?? m.data.name}
-                  </p>
-                  <p class="text-muted truncate text-xs">
-                    <span class="font-medium">관심 분야:</span>{' '}
-                    {m.data.researchFields && m.data.researchFields.length > 0
-                      ? m.data.researchFields.join(' · ')
-                      : '—'}
-                  </p>
-                  <p class="text-muted truncate text-xs">
-                    <span class="font-medium">이메일:</span>{' '}
-                    {m.data.email ? (
-                      <a
-                        href={`mailto:${m.data.email}`}
-                        class="break-all underline"
-                      >
-                        {m.data.email}
-                      </a>
-                    ) : (
-                      '—'
+              <li class="border-default bg-surface hover:border-accent-hover flex flex-col rounded-xl border p-4 transition-colors">
+                <div class="flex gap-4">
+                  {m.data.photo ? (
+                    <img
+                      src={m.data.photo}
+                      alt={m.data.nameKo ?? m.data.name}
+                      class="h-24 w-20 flex-shrink-0 rounded-lg object-cover"
+                    />
+                  ) : (
+                    <div
+                      class="bg-surface-muted text-muted-subtle flex h-24 w-20 flex-shrink-0 items-center justify-center rounded-lg text-xs"
+                      aria-hidden="true"
+                    >
+                      사진 없음
+                    </div>
+                  )}
+
+                  <div class="min-w-0 flex-1">
+                    <p class="text-primary truncate font-medium">
+                      {m.data.nameKo ?? m.data.name}
+                    </p>
+                    {m.data.nameKo && m.data.name !== m.data.nameKo && (
+                      <p class="text-muted-subtle truncate text-xs">
+                        {m.data.name}
+                      </p>
                     )}
-                  </p>
-                  <p class="text-muted truncate text-xs">
-                    <span class="font-medium">홈페이지:</span>{' '}
-                    {m.data.homepage ? (
-                      <a
-                        href={m.data.homepage}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="break-all underline"
-                      >
-                        링크
-                      </a>
-                    ) : (
-                      '—'
+
+                    {/* 비어 있는 항목은 '—'로 채우지 않고 줄 자체를 뺀다. */}
+                    {m.data.researchFields &&
+                      m.data.researchFields.length > 0 && (
+                        <ul class="mt-2 flex flex-wrap gap-1">
+                          {m.data.researchFields.map((f) => (
+                            <li class="btn-badge">{f}</li>
+                          ))}
+                        </ul>
+                      )}
+
+                    {m.data.graduationInfo && (
+                      <p class="text-muted-subtle mt-2 text-xs">
+                        {m.data.graduationInfo}
+                      </p>
                     )}
-                  </p>
-                  {/* 스튜디오 '소개'란에 연구 분야를 적는 경우가 많아 카드에도 노출한다. */}
-                  {m.data.bio && (
-                    <p class="text-muted pt-1 text-xs leading-relaxed whitespace-pre-line">
+
+                    <div class="mt-2 space-y-0.5 text-xs">
+                      {m.data.email && (
+                        <a
+                          href={`mailto:${m.data.email}`}
+                          class="text-muted hover:text-primary block truncate underline decoration-1 underline-offset-2"
+                        >
+                          {m.data.email}
+                        </a>
+                      )}
+                      {m.data.homepage && (
+                        <a
+                          href={m.data.homepage}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-muted hover:text-primary block truncate underline decoration-1 underline-offset-2"
+                        >
+                          홈페이지 ↗
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 스튜디오 '소개'란에 연구 분야를 길게 적는 경우가 많아
+                    카드가 늘어지지 않게 접어둔다. */}
+                {m.data.bio && (
+                  <details class="border-border-muted mt-3 border-t pt-3">
+                    <summary class="text-muted hover:text-primary cursor-pointer text-xs font-medium">
+                      연구 분야 보기
+                    </summary>
+                    <p class="text-muted mt-2 text-xs leading-relaxed whitespace-pre-line">
                       {m.data.bio}
                     </p>
-                  )}
-                </div>
+                  </details>
+                )}
               </li>
             ))}
           </ul>

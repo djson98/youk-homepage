@@ -19,6 +19,20 @@ const years = Object.keys(grouped)
   .map(Number)
   .sort((a, b) => b - a);
 
+/**
+ * 원문으로 가는 링크. PMID를 따로 저장하지 않으므로 PubMed는 검색 URL로 보낸다.
+ * DOI로 검색하면 해당 논문 한 건으로 바로 떨어지고, DOI가 없으면 제목으로
+ * 검색해 결과 목록을 띄운다.
+ */
+function pubmedUrl(doi: string | undefined, title: string): string {
+  const term = doi?.trim() || title;
+  return `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(term)}`;
+}
+
+function doiUrl(doi: string): string {
+  return doi.startsWith('http') ? doi : `https://doi.org/${doi}`;
+}
+
 const allBibtexData: PublicationData[] = sorted.map((p) => ({
   title: p.data.title,
   authors: p.data.authors,
@@ -63,24 +77,59 @@ const allBibtexData: PublicationData[] = sorted.map((p) => ({
                 {grouped[year].map((pub) => (
                   <li class="border-default border-b pb-4">
                     <p class="text-primary leading-snug font-medium">
-                      {pub.data.doi ? (
-                        <a
-                          href={`https://doi.org/${pub.data.doi}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          class="hover:underline"
+                      <a
+                        href={
+                          pub.data.doi
+                            ? doiUrl(pub.data.doi)
+                            : pubmedUrl(undefined, pub.data.title)
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="hover:underline"
+                        title="원문 보기"
+                      >
+                        {pub.data.title}
+                        <span
+                          class="text-muted-subtle ml-1 align-middle text-xs"
+                          aria-hidden="true"
                         >
-                          {pub.data.title}
-                        </a>
-                      ) : (
-                        pub.data.title
-                      )}
+                          ↗
+                        </span>
+                      </a>
                     </p>
                     <p class="text-muted mt-1 text-sm">
                       {pub.data.authors.join(', ')}
                       {pub.data.journal ? ` · ${pub.data.journal}` : ''}
                     </p>
-                    <div class="mt-2">
+                    <div class="mt-2 flex flex-wrap items-center gap-2">
+                      <a
+                        href={pubmedUrl(pub.data.doi, pub.data.title)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-badge"
+                      >
+                        PubMed ↗
+                      </a>
+                      {pub.data.doi && (
+                        <a
+                          href={doiUrl(pub.data.doi)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="btn-badge"
+                        >
+                          DOI ↗
+                        </a>
+                      )}
+                      {pub.data.pdf && (
+                        <a
+                          href={pub.data.pdf}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="btn-badge"
+                        >
+                          PDF ↗
+                        </a>
+                      )}
                       <BibtexButton
                         client:idle
                         publication={{
