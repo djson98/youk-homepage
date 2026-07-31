@@ -5,7 +5,7 @@ import { gallery } from './gallery';
 import { news } from './news';
 import { lecture } from './lecture';
 import { career } from './career';
-import { hero } from './hero';
+import { homePage } from './homePage';
 
 export const schemaTypes = [
   publication,
@@ -15,11 +15,11 @@ export const schemaTypes = [
   news,
   lecture,
   career,
-  hero,
+  homePage,
 ];
 
 /**
  * 문서가 하나만 존재해야 하는 타입.
  * sanity.config.ts에서 새 문서 생성 템플릿과 문서 액션을 걸러내는 데 쓴다.
  */
-export const singletonTypes = new Set<string>(['hero']);
+export const singletonTypes = new Set<string>(['homePage']);

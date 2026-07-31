@@ -426,16 +426,17 @@ export async function getCareer(): Promise<Entry<CareerData>[]> {
   return wrapValidated(validated);
 }
 
-// ─── hero (싱글턴) ─────────────────────────────────────────────
+// ─── homePage / 히어로 (싱글턴) ────────────────────────────────
 // 문서 하나뿐이라 Entry<T>로 감싸지 않고 그대로 반환한다.
 // 아직 만들지 않았거나 publish 전이면 null → 컴포넌트가 site.config로 폴백.
+// 필드명은 스튜디오에서 이미 발행된 문서(heroImage/heroImageAlt)를 따른다.
 const heroRawSchema = z.object({
   headline: z.string().optional(),
   subheadline: z.string().optional(),
   keywords: z.array(z.string()).optional(),
-  background: z.unknown().optional(),
-  backgroundAlt: z.string().optional(),
-  // hotspot을 켜둔 이미지에만 붙는다.
+  heroImage: z.unknown().optional(),
+  heroImageAlt: z.string().optional(),
+  // hotspot을 실제로 조절한 이미지에만 붙는다.
   focal: z.object({ x: z.number(), y: z.number() }).optional(),
   overlay: z.number().optional(),
   align: z.enum(['left', 'center']).optional(),
@@ -463,25 +464,25 @@ export interface HeroData {
 
 export async function getHero(): Promise<HeroData | null> {
   const raw = await sanityClient.fetch<unknown>(
-    `*[_id == "hero"][0] {
-      headline, subheadline, keywords, background, backgroundAlt,
-      "focal": background.hotspot { x, y },
+    `*[_id == "homePage"][0] {
+      headline, subheadline, keywords, heroImage, heroImageAlt,
+      "focal": heroImage.hotspot { x, y },
       overlay, align, ctaLabel, ctaHref
     }`
   );
   if (!raw || typeof raw !== 'object') return null;
 
   const cleaned = stripNulls(raw as Record<string, unknown>);
-  const row = parseOrThrow('hero', heroRawSchema, cleaned, 'hero');
+  const row = parseOrThrow('homePage', heroRawSchema, cleaned, 'homePage');
 
-  const { background, focal, overlay, align, ...rest } = row;
+  const { heroImage, heroImageAlt, focal, overlay, align, ...rest } = row;
 
   // 원본 비율 그대로 두고 CSS object-cover로 자른다.
   // 히어로 높이가 뷰포트마다 달라져서 서버 크롭보다 이쪽이 안전하다.
   let backgroundUrl: string | undefined;
   let backgroundUrlSm: string | undefined;
-  if (background && typeof background === 'object') {
-    const img = urlFor(background as SanityImageSource).auto('format');
+  if (heroImage && typeof heroImage === 'object') {
+    const img = urlFor(heroImage as SanityImageSource).auto('format');
     backgroundUrl = img.width(2000).quality(75).url();
     backgroundUrlSm = img.width(1000).quality(70).url();
   }
@@ -490,6 +491,7 @@ export async function getHero(): Promise<HeroData | null> {
     ...rest,
     backgroundUrl,
     backgroundUrlSm,
+    backgroundAlt: heroImageAlt,
     objectPosition: focal
       ? `${(focal.x * 100).toFixed(1)}% ${(focal.y * 100).toFixed(1)}%`
       : '50% 50%',

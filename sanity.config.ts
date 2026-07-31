@@ -20,13 +20,16 @@ const structure: StructureResolver = (S) =>
   S.list()
     .title('biomed Lab CMS')
     .items([
-      // 히어로는 문서 목록 없이 편집 화면으로 바로 들어간다.
+      // 홈 화면은 문서가 하나뿐이라 목록 없이 편집 화면으로 바로 들어간다.
       S.listItem()
-        .id('hero')
-        .title('홈 히어로')
+        .id('homePage')
+        .title('홈 화면 (히어로)')
         .icon(HomeIcon)
         .child(
-          S.document().schemaType('hero').documentId('hero').title('홈 히어로')
+          S.document()
+            .schemaType('homePage')
+            .documentId('homePage')
+            .title('홈 화면 (히어로)')
         ),
       S.divider(),
       S.listItem()
