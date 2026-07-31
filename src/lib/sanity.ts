@@ -300,12 +300,14 @@ export async function getGallery(): Promise<Entry<GalleryData>[]> {
       ...rest,
       date: new Date(date),
       images: images.map((img) => {
-        const imgObj = img as SanityImageSource & { caption?: string };
+        const imgObj = img as SanityImageSource & { caption?: string | null };
         return {
           src: urlFor(imgObj).width(1200).url(),
+          // 캡션을 비워두면 Sanity가 null을 준다. stripNulls는 최상위만
+          // 훑으므로 배열 안쪽은 여기서 undefined로 눌러줘야 zod를 통과한다.
           caption:
             typeof imgObj === 'object' && imgObj !== null && 'caption' in imgObj
-              ? imgObj.caption
+              ? (imgObj.caption ?? undefined)
               : undefined,
         };
       }),
@@ -422,4 +424,77 @@ export async function getCareer(): Promise<Entry<CareerData>[]> {
   }));
   const validated = parseRows('career', careerSchema, transformed);
   return wrapValidated(validated);
+}
+
+// ─── hero (싱글턴) ─────────────────────────────────────────────
+// 문서 하나뿐이라 Entry<T>로 감싸지 않고 그대로 반환한다.
+// 아직 만들지 않았거나 publish 전이면 null → 컴포넌트가 site.config로 폴백.
+const heroRawSchema = z.object({
+  headline: z.string().optional(),
+  subheadline: z.string().optional(),
+  keywords: z.array(z.string()).optional(),
+  background: z.unknown().optional(),
+  backgroundAlt: z.string().optional(),
+  // hotspot을 켜둔 이미지에만 붙는다.
+  focal: z.object({ x: z.number(), y: z.number() }).optional(),
+  overlay: z.number().optional(),
+  align: z.enum(['left', 'center']).optional(),
+  ctaLabel: z.string().optional(),
+  ctaHref: z.string().optional(),
+});
+
+export interface HeroData {
+  headline?: string;
+  subheadline?: string;
+  keywords?: string[];
+  /** 데스크톱용 배경 URL (2000w). 사진을 안 올렸으면 undefined. */
+  backgroundUrl?: string;
+  /** 모바일용 배경 URL (1000w). srcset에 쓴다. */
+  backgroundUrlSm?: string;
+  backgroundAlt?: string;
+  /** hotspot을 CSS object-position으로 옮긴 값. 예: '50% 35%' */
+  objectPosition: string;
+  /** 사진을 덮는 검은 레이어 불투명도 0~0.9 */
+  overlayOpacity: number;
+  align: 'left' | 'center';
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+export async function getHero(): Promise<HeroData | null> {
+  const raw = await sanityClient.fetch<unknown>(
+    `*[_id == "hero"][0] {
+      headline, subheadline, keywords, background, backgroundAlt,
+      "focal": background.hotspot { x, y },
+      overlay, align, ctaLabel, ctaHref
+    }`
+  );
+  if (!raw || typeof raw !== 'object') return null;
+
+  const cleaned = stripNulls(raw as Record<string, unknown>);
+  const row = parseOrThrow('hero', heroRawSchema, cleaned, 'hero');
+
+  const { background, focal, overlay, align, ...rest } = row;
+
+  // 원본 비율 그대로 두고 CSS object-cover로 자른다.
+  // 히어로 높이가 뷰포트마다 달라져서 서버 크롭보다 이쪽이 안전하다.
+  let backgroundUrl: string | undefined;
+  let backgroundUrlSm: string | undefined;
+  if (background && typeof background === 'object') {
+    const img = urlFor(background as SanityImageSource).auto('format');
+    backgroundUrl = img.width(2000).quality(75).url();
+    backgroundUrlSm = img.width(1000).quality(70).url();
+  }
+
+  return {
+    ...rest,
+    backgroundUrl,
+    backgroundUrlSm,
+    objectPosition: focal
+      ? `${(focal.x * 100).toFixed(1)}% ${(focal.y * 100).toFixed(1)}%`
+      : '50% 50%',
+    // 스튜디오는 0~90(%)으로 받고 CSS에는 0~0.9로 넘긴다.
+    overlayOpacity: Math.min(Math.max(overlay ?? 45, 0), 90) / 100,
+    align: align ?? 'left',
+  };
 }

@@ -9,13 +9,26 @@ import {
   BellIcon,
   ImagesIcon,
   BookIcon,
+  HomeIcon,
 } from '@sanity/icons';
-import { schemaTypes } from './sanity-schemas';
+import { schemaTypes, singletonTypes } from './sanity-schemas';
+
+// 싱글턴 문서에서 허용할 액션. 삭제/복제/발행취소는 막는다.
+const singletonActions = new Set(['publish', 'discardChanges', 'restore']);
 
 const structure: StructureResolver = (S) =>
   S.list()
     .title('biomed Lab CMS')
     .items([
+      // 히어로는 문서 목록 없이 편집 화면으로 바로 들어간다.
+      S.listItem()
+        .id('hero')
+        .title('홈 히어로')
+        .icon(HomeIcon)
+        .child(
+          S.document().schemaType('hero').documentId('hero').title('홈 히어로')
+        ),
+      S.divider(),
       S.listItem()
         .id('research')
         .title('연구')
@@ -70,5 +83,18 @@ export default defineConfig({
   projectId: 'wd7ygz18',
   dataset: 'production',
   plugins: [structureTool({ structure }), visionTool()],
-  schema: { types: schemaTypes },
+  // 싱글턴은 "새 문서" 목록에서 숨기고, 삭제/복제 액션도 제거한다.
+  schema: {
+    types: schemaTypes,
+    templates: (templates) =>
+      templates.filter(({ schemaType }) => !singletonTypes.has(schemaType)),
+  },
+  document: {
+    actions: (prev, { schemaType }) =>
+      singletonTypes.has(schemaType)
+        ? prev.filter(
+            ({ action }) => action && singletonActions.has(action as string)
+          )
+        : prev,
+  },
 });

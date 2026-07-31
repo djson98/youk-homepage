@@ -1,17 +1,140 @@
 ---
-// 풀블리드 히어로 자리. 디자인 미정 — 껍데기만.
+// 풀블리드 히어로. 내용은 Sanity 싱글턴 문서(`hero`)에서 읽고,
+// 문서가 없거나 필드가 비어 있으면 site.config.ts 값으로 폴백한다.
 // BaseLayout의 max-w-7xl을 우회하기 위해 main 외부 slot에 배치.
+import { getHero } from '../lib/sanity';
+import { siteConfig } from '../config/site.config';
+
+const hero = await getHero();
+
+const headline = hero?.headline || siteConfig.lab.nameKo;
+const subheadline = hero?.subheadline || siteConfig.lab.tagline;
+const keywords =
+  hero?.keywords && hero.keywords.length > 0
+    ? hero.keywords
+    : siteConfig.lab.keywords;
+
+const bgUrl = hero?.backgroundUrl;
+const bgUrlSm = hero?.backgroundUrlSm;
+const bgAlt = hero?.backgroundAlt ?? '';
+const objectPosition = hero?.objectPosition ?? '50% 50%';
+// 사진 위에 깔리는 검은 레이어의 불투명도 — 글자 가독성용. 스튜디오에서 조절.
+const overlayOpacity = hero?.overlayOpacity ?? 0.45;
+
+const hasImage = Boolean(bgUrl);
+const centered = hero?.align === 'center';
+
+// 링크가 빠진 버튼은 렌더하지 않는다 (스키마에서도 막지만 방어적으로).
+const cta =
+  hero?.ctaLabel && hero?.ctaHref
+    ? { label: hero.ctaLabel, href: hero.ctaHref }
+    : null;
+const ctaIsExternal = cta ? /^https?:\/\//.test(cta.href) : false;
 ---
 
 <section
-  class="bg-surface-muted border-default flex min-h-[60vh] w-full items-center border-b pt-20 md:pt-24"
+  class:list={[
+    'relative flex min-h-[60vh] w-full items-center overflow-hidden pt-20 md:pt-24',
+    hasImage ? 'bg-neutral-900' : 'bg-surface-muted border-default border-b',
+  ]}
   aria-label="Hero"
 >
-  <div class="mx-auto w-full max-w-7xl px-3 md:px-8">
+  {
+    hasImage && (
+      <>
+        <img
+          src={bgUrl}
+          srcset={`${bgUrlSm} 1000w, ${bgUrl} 2000w`}
+          sizes="100vw"
+          alt={bgAlt}
+          class="absolute inset-0 h-full w-full object-cover"
+          style={`object-position: ${objectPosition}`}
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+        <div
+          class="absolute inset-0 bg-black"
+          style={`opacity: ${overlayOpacity}`}
+          aria-hidden="true"
+        />
+      </>
+    )
+  }
+
+  <div class="relative mx-auto w-full max-w-7xl px-3 py-16 md:px-8">
     <slot>
-      <p class="text-muted text-center">
-        연구실 소개 / 사진 / 연구 키워드 등을 넣어주세요
-      </p>
+      <div
+        class:list={[
+          'max-w-3xl',
+          centered && 'mx-auto text-center',
+          hasImage && 'text-white',
+        ]}
+      >
+        <h1
+          class:list={[
+            'font-display text-3xl leading-tight font-semibold md:text-5xl',
+            hasImage ? 'text-white' : 'text-primary',
+          ]}
+        >
+          {headline}
+        </h1>
+
+        {
+          subheadline && (
+            <p
+              class:list={[
+                'mt-4 text-base leading-relaxed whitespace-pre-line md:mt-5 md:text-lg',
+                hasImage ? 'text-white/85' : 'text-muted',
+              ]}
+            >
+              {subheadline}
+            </p>
+          )
+        }
+
+        {
+          keywords && keywords.length > 0 && (
+            <ul
+              class:list={[
+                'mt-6 flex flex-wrap gap-2',
+                centered && 'justify-center',
+              ]}
+            >
+              {keywords.map((kw) => (
+                <li
+                  class:list={[
+                    hasImage
+                      ? 'rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm'
+                      : 'btn-badge',
+                  ]}
+                >
+                  {kw}
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        {
+          cta && (
+            <a
+              href={cta.href}
+              target={ctaIsExternal ? '_blank' : undefined}
+              rel={ctaIsExternal ? 'noopener noreferrer' : undefined}
+              class:list={[
+                'mt-8 inline-flex items-center gap-1 rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-300',
+                hasImage
+                  ? 'bg-white text-neutral-900 hover:bg-white/85'
+                  : 'bg-primary text-page hover:opacity-85',
+              ]}
+            >
+              {cta.label}
+              <span aria-hidden="true">→</span>
+            </a>
+          )
+        }
+      </div>
     </slot>
   </div>
 </section>
