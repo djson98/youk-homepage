@@ -1,5 +1,5 @@
 ---
-title: 'Indolent γδ CD4<sup>-</sup>/CD8<sup>-</sup> double negative T-large granular lymphocytic leukemia with a STAT5B T628S mutation: a case report'
+title: 'Indolent γδ CD4&lt;sup&gt;-&lt;/sup&gt;/CD8&lt;sup&gt;-&lt;/sup&gt; double negative T-large granular lymphocytic leukemia with a STAT5B T628S mutation: a case report'
 authors:
   - 'Hee-Jeong Youk'
   - 'Chan Jeoung Park'
